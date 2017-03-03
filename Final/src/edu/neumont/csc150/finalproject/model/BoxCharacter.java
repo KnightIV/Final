@@ -7,29 +7,58 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 abstract public class BoxCharacter implements ActionListener {
-	
-	private static final int GRAVITY = 6;
+
+	public static final int GRAVITY = 1, JUMP = 30, MOVE = 5;
 	private int xPos, yPos, ownXVector, ownYVector, otherYVector, otherXVector, width, height;
 	private Image image;
-	private Timer jumpTimer;
+	protected boolean isVerticalStopped = false, isOnButton = false, hasJumped = false;
+	protected Timer jumpTimer;
+
 	private String name;
-	
-	public BoxCharacter() {
-		jumpTimer = new Timer((int) 50.0/3, this);
+
+	public BoxCharacter(int startX, int startY) {
+		this.setxPos(startX);
+		this.setyPos(startY);
+		this.width = 30;
+		this.height = 30;
+		jumpTimer = new Timer((int) 50.0 / 3, this);
+		jumpTimer.start();
 	}
-	
+
+	/**
+	 * Empty method, since the actual class is in the child classes
+	 * 
+	 * @param keyCodePressed
+	 *            - the key pressed to activate the power
+	 */
+	public void playerPowerActivate(int keyCodePressed) {
+
+	}
+
 	public void moveRight() {
 		xPos += ownXVector + otherXVector;
 	}
-	
+
 	public void moveLeft() {
 		moveRight();
 	}
-	
+
 	public void jump() {
-		ownYVector = -30;
+		if (!hasJumped) {
+			this.yPos--;
+			ownYVector = -30 + otherYVector;
+			hasJumped = true;
+		}
 	}
-	
+
+	public void stop(boolean verticalMove) {
+		if (verticalMove) {
+			ownYVector = 0;
+		} else {
+			ownXVector = 0;
+		}
+	}
+
 	public void reset(int initXPos, int initYPos) {
 		setyPos(initYPos);
 		setxPos(initXPos);
@@ -43,7 +72,8 @@ abstract public class BoxCharacter implements ActionListener {
 	}
 
 	/**
-	 * @param xPos the xPos to set
+	 * @param xPos
+	 *            the xPos to set
 	 */
 	public void setxPos(int xPos) {
 		this.xPos = xPos;
@@ -57,7 +87,8 @@ abstract public class BoxCharacter implements ActionListener {
 	}
 
 	/**
-	 * @param yPos the yPos to set
+	 * @param yPos
+	 *            the yPos to set
 	 */
 	public void setyPos(int yPos) {
 		this.yPos = yPos;
@@ -71,7 +102,8 @@ abstract public class BoxCharacter implements ActionListener {
 	}
 
 	/**
-	 * @param ownXVector the ownXVector to set
+	 * @param ownXVector
+	 *            the ownXVector to set
 	 */
 	public void setOwnXVector(int ownXVector) {
 		this.ownXVector = ownXVector;
@@ -85,7 +117,8 @@ abstract public class BoxCharacter implements ActionListener {
 	}
 
 	/**
-	 * @param ownYVector the ownYVector to set
+	 * @param ownYVector
+	 *            the ownYVector to set
 	 */
 	public void setOwnYVector(int ownYVector) {
 		this.ownYVector = ownYVector;
@@ -99,7 +132,8 @@ abstract public class BoxCharacter implements ActionListener {
 	}
 
 	/**
-	 * @param otherYVector the otherYVector to set
+	 * @param otherYVector
+	 *            the otherYVector to set
 	 */
 	public void setOtherYVector(int otherYVector) {
 		this.otherYVector = otherYVector;
@@ -113,7 +147,8 @@ abstract public class BoxCharacter implements ActionListener {
 	}
 
 	/**
-	 * @param otherXVector the otherXVector to set
+	 * @param otherXVector
+	 *            the otherXVector to set
 	 */
 	public void setOtherXVector(int otherXVector) {
 		this.otherXVector = otherXVector;
@@ -127,7 +162,8 @@ abstract public class BoxCharacter implements ActionListener {
 	}
 
 	/**
-	 * @param width the width to set
+	 * @param width
+	 *            the width to set
 	 */
 	public void setWidth(int width) {
 		this.width = width;
@@ -141,7 +177,8 @@ abstract public class BoxCharacter implements ActionListener {
 	}
 
 	/**
-	 * @param height the height to set
+	 * @param height
+	 *            the height to set
 	 */
 	public void setHeight(int height) {
 		this.height = height;
@@ -155,24 +192,11 @@ abstract public class BoxCharacter implements ActionListener {
 	}
 
 	/**
-	 * @param image the image to set
+	 * @param image
+	 *            the image to set
 	 */
 	public void setImage(Image image) {
 		this.image = image;
-	}
-
-	/**
-	 * @return the jumpTimer
-	 */
-	public Timer getJumpTimer() {
-		return jumpTimer;
-	}
-
-	/**
-	 * @param jumpTimer the jumpTimer to set
-	 */
-	public void setJumpTimer(Timer jumpTimer) {
-		this.jumpTimer = jumpTimer;
 	}
 
 	/**
@@ -183,14 +207,29 @@ abstract public class BoxCharacter implements ActionListener {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	public boolean isOnButton() {
+		return isOnButton;
+	}
+
+	public void setIsOnButton(boolean isOnButton) {
+		this.isOnButton = isOnButton;
+	}
+	
+	public void setHasJumped(boolean hasJumped) {
+		this.hasJumped = hasJumped;
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		ownYVector += GRAVITY / ((int) 50.0/3);
+		if (!isVerticalStopped) {
+			ownYVector += GRAVITY / ((int) 50.0 / 3);
+		}
 	}
 }

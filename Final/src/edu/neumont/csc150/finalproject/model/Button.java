@@ -6,10 +6,7 @@ import javax.swing.ImageIcon;
 
 public class Button {
 
-	// placeholder dimensions
-	private final int WIDTH = 10, HEIGHT = 10;
-	
-	private int xPos, yPos;
+	private int width = 30, height = 30, xPos, yPos;
 	private ImageIcon texture;
 	private Door doorLink;
 	private ArrayList<Laser> laserLinks;
@@ -19,8 +16,22 @@ public class Button {
 		yPos = y;
 		this.doorLink = doorLink;
 		this.laserLinks = laserLinks;
+		// width = texture.getIconWidth();
+		// height = texture.getIconHeight();
 	}
-	
+
+	public void trigger() {
+		if (laserLinks != null) {
+			for (Laser link : laserLinks) {
+				link.toggleLaser();
+			}
+		}
+		
+		if (doorLink != null) {
+			doorLink.toggleDoor();
+		}
+	}
+
 	/**
 	 * @return the xPos
 	 */
@@ -55,14 +66,14 @@ public class Button {
 	 * @return the width
 	 */
 	public int getWidth() {
-		return WIDTH;
+		return width;
 	}
 
 	/**
 	 * @return the height
 	 */
 	public int getHeight() {
-		return HEIGHT;
+		return height;
 	}
 
 	/**
@@ -78,11 +89,5 @@ public class Button {
 	 */
 	public void setTexture(ImageIcon texture) {
 		this.texture = texture;
-	}
-
-	public void trigger() {
-		// activate all doors and lasers that this button is linked to (ie. open
-		// a closed door and vice versa, or shut off a laser if it's on, and
-		// vice versa)
 	}
 }

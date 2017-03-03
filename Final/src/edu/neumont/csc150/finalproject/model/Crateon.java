@@ -6,8 +6,8 @@ public class Crateon extends BoxCharacter {
 
 	private GravityDirection gravityDir;
 
-	public Crateon() {
-		super();
+	public Crateon(int startX, int startY) {
+		super(startX, startY);
 		gravityDir = GravityDirection.DOWN;
 	}
 
@@ -20,33 +20,40 @@ public class Crateon extends BoxCharacter {
 
 	public void moveRight() {
 		if (gravityDir == GravityDirection.UP || gravityDir == GravityDirection.DOWN) {
-			this.setOwnXVector(10);
+			this.setOwnXVector(MOVE);
 		} else if (gravityDir == GravityDirection.RIGHT) {
-			this.setOwnYVector(10);
+			this.setOwnYVector(MOVE);
 		} else if (gravityDir == GravityDirection.LEFT) {
-			this.setOwnYVector(-10);
+			this.setOwnYVector(-MOVE);
 		}
 	}
 
 	public void moveLeft() {
 		if (gravityDir == GravityDirection.UP || gravityDir == GravityDirection.DOWN) {
-			this.setOwnXVector(-10);
+			this.setOwnXVector(-MOVE);
 		} else if (gravityDir == GravityDirection.RIGHT) {
-			this.setOwnYVector(-10);
+			this.setOwnYVector(-MOVE);
 		} else if (gravityDir == GravityDirection.LEFT) {
-			this.setOwnYVector(10);
+			this.setOwnYVector(MOVE);
 		}
 	}
 
 	public void jump() {
-		if (gravityDir == GravityDirection.UP) {
-			this.setOwnYVector(30);
-		} else if (gravityDir == GravityDirection.DOWN) {
-			this.setOwnYVector(-30);
-		} else if (gravityDir == GravityDirection.LEFT) {
-			this.setOwnXVector(30);
-		} else if (gravityDir == GravityDirection.RIGHT) {
-			this.setOwnXVector(-30);
+		if (!this.hasJumped) {
+			if (gravityDir == GravityDirection.UP) {
+				this.setyPos(this.getyPos() + 1);
+				this.setOwnYVector(JUMP);
+			} else if (gravityDir == GravityDirection.DOWN) {
+				this.setyPos(this.getyPos() - 1);
+				this.setOwnYVector(-JUMP);
+			} else if (gravityDir == GravityDirection.LEFT) {
+				this.setxPos(this.getxPos() + 1);
+				this.setOwnXVector(JUMP);
+			} else if (gravityDir == GravityDirection.RIGHT) {
+				this.setxPos(this.getxPos() - 1);
+				this.setOwnXVector(-JUMP);
+			}
+			this.hasJumped = true;
 		}
 	}
 
@@ -59,19 +66,19 @@ public class Crateon extends BoxCharacter {
 	public void actionPerformed(ActionEvent e) {
 		switch (gravityDir) {
 		case UP:
-			
+			setOwnYVector(getOwnYVector() - GRAVITY);
 			break;
-			
+
 		case DOWN:
-			
+			setOwnYVector(getOwnYVector() + GRAVITY);
 			break;
-			
+
 		case LEFT:
-			
+			setOwnXVector(getOwnXVector() - GRAVITY);
 			break;
-			
+
 		case RIGHT:
-			
+			setOwnXVector(getOwnXVector() + GRAVITY);
 			break;
 		}
 	}

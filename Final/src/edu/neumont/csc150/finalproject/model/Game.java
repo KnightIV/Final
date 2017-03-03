@@ -6,10 +6,6 @@ public class Game {
 	private Casey casey;
 	private Crateon crateon;
 	
-	public Game() {
-		
-	}
-	
 	public Game(Level curLevel) {
 		this.curLevel = curLevel;
 	}
@@ -18,11 +14,19 @@ public class Game {
 		curLevel.movePlayer(isRight);
 	}
 	
+	public void stopHorizontalPlayer() {
+		curLevel.stopPlayer(false);
+	}
+	
 	public void jump() {
 		curLevel.playerJump();
 	}
 	
-	public void setCurLevel(Level newLvl) {
+	public void playerPowerActivate(int keyCodePressed) {
+		curLevel.playerPowerActivate(keyCodePressed);
+	}
+	
+	public void swapLevel(Level newLvl) {
 		curLevel = newLvl;
 	}
 	

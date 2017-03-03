@@ -1,32 +1,49 @@
 package edu.neumont.csc150.finalproject.model;
 
-public class Door {
+import javax.swing.ImageIcon;
 
-	public void open() {
-		
+public class Door {
+	private int width = 80, height = 200;
+	private int xPos, yPos;
+	private ImageIcon texture;
+	private boolean isOpen;
+	
+	public Door(int xPos, int yPos) {
+		this.xPos = xPos;
+		this.yPos = yPos;
+//		this.width = texture.getIconWidth();
+//		this.height = texture.getIconHeight();
+	}
+
+	public void toggleDoor() {
+		isOpen = !isOpen;
 	}
 	
 	public void close() {
-		
+		isOpen = false;
 	}
 	
 	public int getXPos() {
-		// TODO Auto-generated method stub
-		return 0;
+		return xPos;
 	}
 
 	public int getWidth() {
-		// TODO Auto-generated method stub
-		return 0;
+		return width;
 	}
 
 	public int getYPos() {
-		// TODO Auto-generated method stub
-		return 0;
+		return yPos;
 	}
 	
 	public int getHeight() {
-		// TODO Auto-generated method stub
-		return 0;
+		return height;
+	}
+	
+	public boolean isOpen() {
+		return isOpen;
+	}
+	
+	public ImageIcon getTexture() {
+		return texture;
 	}
 }

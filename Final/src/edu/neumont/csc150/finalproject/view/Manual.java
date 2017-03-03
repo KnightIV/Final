@@ -9,6 +9,9 @@ import javax.swing.JPanel;
 import edu.neumont.csc150.finalproject.controller.GameManager;
 
 public class Manual extends JPanel{
+	
+	private static final long serialVersionUID = 4556139318257082454L;
+	
 	private GameManager gameManager;
 	private Image texture;
 	private JButton quitToMainMenu;
@@ -20,6 +23,7 @@ public class Manual extends JPanel{
 	
 	public void initManual() {
 		quitToMainMenu = new JButton("Quit To Main Menu");
+		quitToMainMenu.addActionListener(gameManager);
 	}
 	
 	@Override

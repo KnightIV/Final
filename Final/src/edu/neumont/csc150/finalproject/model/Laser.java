@@ -13,7 +13,11 @@ public class Laser {
 		this.yPos = y;
 		this.width = width;
 		this.height = height;
-		this.setOn(isOn);
+		this.isOn = isOn;
+	}
+	
+	public void toggleLaser() {
+		isOn = !isOn;
 	}
 	
 	public int getXPos() {
@@ -39,9 +43,6 @@ public class Laser {
 		return isOn;
 	}
 	
-	/**
-	 * @param isOn the isOn to set
-	 */
 	public void setOn(boolean isOn) {
 		this.isOn = isOn;
 	}
