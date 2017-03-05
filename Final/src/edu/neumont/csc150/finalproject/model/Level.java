@@ -2,6 +2,7 @@ package edu.neumont.csc150.finalproject.model;
 
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 public class Level {
@@ -45,29 +46,34 @@ public class Level {
 				break;
 			}
 
-			isFarFromPlatform = checkForPlayerCollision(p.getXPos() + Casey.TELEPORT_DISTANCE,
+			// checks the right side of Casey
+			isFarFromPlatform = keyCodePressed == KeyEvent.VK_D && !checkForPlayerCollision(p.getXPos() + Casey.TELEPORT_DISTANCE,
 					p.getXPos() + p.getWidth() + Casey.TELEPORT_DISTANCE, p.getYPos(), p.getYPos() + p.getHeight());
 
 			if (!isFarFromPlatform) {
 				break;
 			}
 
-			isFarFromPlatform = checkForPlayerCollision(p.getXPos(), p.getXPos() + p.getWidth(),
+			// checks the left side of Casey
+			isFarFromPlatform = keyCodePressed == KeyEvent.VK_A && !checkForPlayerCollision(p.getXPos() - Casey.TELEPORT_DISTANCE,
+					p.getXPos() + p.getWidth() - Casey.TELEPORT_DISTANCE, p.getYPos(), p.getYPos() + p.getHeight());
+
+			if (!isFarFromPlatform) {
+				break;
+			}
+
+			// checks the bottom side of Casey
+			isFarFromPlatform = keyCodePressed == KeyEvent.VK_S && !checkForPlayerCollision(p.getXPos(), p.getXPos() + p.getWidth(),
 					p.getYPos() + Casey.TELEPORT_DISTANCE, p.getYPos() + p.getHeight() + Casey.TELEPORT_DISTANCE);
 
 			if (!isFarFromPlatform) {
 				break;
 			}
 
-			isFarFromPlatform = checkForPlayerCollision(p.getXPos(), p.getXPos() + p.getWidth(),
+			// checks the top side of Casey
+			isFarFromPlatform = keyCodePressed == KeyEvent.VK_W && !checkForPlayerCollision(p.getXPos(), p.getXPos() + p.getWidth(),
 					p.getYPos() - Casey.TELEPORT_DISTANCE, p.getYPos() + p.getHeight() - Casey.TELEPORT_DISTANCE);
 
-			if (!isFarFromPlatform) {
-				break;
-			}
-
-			isFarFromPlatform = checkForPlayerCollision(p.getXPos() - Casey.TELEPORT_DISTANCE,
-					p.getXPos() + p.getWidth() - Casey.TELEPORT_DISTANCE, p.getYPos(), p.getYPos() + p.getHeight());
 		}
 
 		if (player instanceof Casey && isFarFromPlatform) {

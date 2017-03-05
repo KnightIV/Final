@@ -11,6 +11,7 @@ public class Door {
 	public Door(int xPos, int yPos) {
 		this.xPos = xPos;
 		this.yPos = yPos;
+		isOpen = false;
 //		this.width = texture.getIconWidth();
 //		this.height = texture.getIconHeight();
 	}

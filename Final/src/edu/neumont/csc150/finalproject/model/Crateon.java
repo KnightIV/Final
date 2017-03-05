@@ -1,6 +1,7 @@
 package edu.neumont.csc150.finalproject.model;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 public class Crateon extends BoxCharacter {
 
@@ -18,13 +19,37 @@ public class Crateon extends BoxCharacter {
 		gravityDir = newDir;
 	}
 
+	public void playerPowerActivate(int keyCodePressed) {
+		switch (keyCodePressed) {
+		case KeyEvent.VK_W:
+			gravityChange(GravityDirection.UP);
+			this.setyPos(this.getyPos() + 3);
+			break;
+
+		case KeyEvent.VK_S:
+			gravityChange(GravityDirection.DOWN);
+			this.setyPos(this.getyPos() - 3);
+			break;
+
+		case KeyEvent.VK_D:
+			gravityChange(GravityDirection.RIGHT);
+			this.setxPos(this.getxPos() + 3);
+			break;
+
+		case KeyEvent.VK_A:
+			gravityChange(GravityDirection.LEFT);
+			this.setxPos(this.getxPos() - 3);
+			break;
+		}
+	}
+
 	public void moveRight() {
 		if (gravityDir == GravityDirection.UP || gravityDir == GravityDirection.DOWN) {
 			this.setOwnXVector(MOVE);
 		} else if (gravityDir == GravityDirection.RIGHT) {
-			this.setOwnYVector(MOVE);
-		} else if (gravityDir == GravityDirection.LEFT) {
 			this.setOwnYVector(-MOVE);
+		} else if (gravityDir == GravityDirection.LEFT) {
+			this.setOwnYVector(MOVE);
 		}
 	}
 
@@ -32,25 +57,25 @@ public class Crateon extends BoxCharacter {
 		if (gravityDir == GravityDirection.UP || gravityDir == GravityDirection.DOWN) {
 			this.setOwnXVector(-MOVE);
 		} else if (gravityDir == GravityDirection.RIGHT) {
-			this.setOwnYVector(-MOVE);
-		} else if (gravityDir == GravityDirection.LEFT) {
 			this.setOwnYVector(MOVE);
+		} else if (gravityDir == GravityDirection.LEFT) {
+			this.setOwnYVector(-MOVE);
 		}
 	}
 
 	public void jump() {
 		if (!this.hasJumped) {
 			if (gravityDir == GravityDirection.UP) {
-				this.setyPos(this.getyPos() + 1);
+				this.setyPos(this.getyPos() + 3);
 				this.setOwnYVector(JUMP);
 			} else if (gravityDir == GravityDirection.DOWN) {
-				this.setyPos(this.getyPos() - 1);
+				this.setyPos(this.getyPos() - 3);
 				this.setOwnYVector(-JUMP);
 			} else if (gravityDir == GravityDirection.LEFT) {
-				this.setxPos(this.getxPos() + 1);
+				this.setxPos(this.getxPos() + 3);
 				this.setOwnXVector(JUMP);
 			} else if (gravityDir == GravityDirection.RIGHT) {
-				this.setxPos(this.getxPos() - 1);
+				this.setxPos(this.getxPos() - 3);
 				this.setOwnXVector(-JUMP);
 			}
 			this.hasJumped = true;
@@ -66,19 +91,27 @@ public class Crateon extends BoxCharacter {
 	public void actionPerformed(ActionEvent e) {
 		switch (gravityDir) {
 		case UP:
-			setOwnYVector(getOwnYVector() - GRAVITY);
+			if (Math.abs(this.getOwnYVector()) < MAX_FALL_SPEED) {
+				setOwnYVector(getOwnYVector() - GRAVITY);
+			}
 			break;
 
 		case DOWN:
-			setOwnYVector(getOwnYVector() + GRAVITY);
+			if (Math.abs(this.getOwnYVector()) < MAX_FALL_SPEED) {
+				setOwnYVector(getOwnYVector() + GRAVITY);
+			}
 			break;
 
 		case LEFT:
-			setOwnXVector(getOwnXVector() - GRAVITY);
+			if (Math.abs(this.getOwnXVector()) < MAX_FALL_SPEED) {
+				setOwnXVector(getOwnXVector() - GRAVITY);
+			}
 			break;
 
 		case RIGHT:
-			setOwnXVector(getOwnXVector() + GRAVITY);
+			if (Math.abs(this.getOwnXVector()) < MAX_FALL_SPEED) {
+				setOwnXVector(getOwnXVector() + GRAVITY);
+			}
 			break;
 		}
 	}

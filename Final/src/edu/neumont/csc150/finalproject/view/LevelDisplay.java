@@ -5,8 +5,8 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-import edu.neumont.csc150.finalproject.controller.InputControl;
 import edu.neumont.csc150.finalproject.model.Button;
+import edu.neumont.csc150.finalproject.model.Crateon;
 import edu.neumont.csc150.finalproject.model.Laser;
 import edu.neumont.csc150.finalproject.model.Level;
 import edu.neumont.csc150.finalproject.model.Platform;
@@ -16,7 +16,6 @@ public class LevelDisplay extends JPanel {
 	private static final long serialVersionUID = 7970298263117969411L;
 
 	private Level curLevel;
-	private InputControl input;
 
 	public LevelDisplay(Level curLevel) {
 		swapLevel(curLevel);
@@ -64,15 +63,21 @@ public class LevelDisplay extends JPanel {
 			}
 		}
 
-		g.setColor(Color.white);
-		g.fillRect(curLevel.getDoor().getXPos(), curLevel.getDoor().getYPos(), curLevel.getDoor().getWidth(),
-				curLevel.getDoor().getHeight());
+		if (curLevel.getDoor().isOpen()) {
+			g.setColor(Color.white);
+			g.fillRect(curLevel.getDoor().getXPos(), curLevel.getDoor().getYPos(), curLevel.getDoor().getWidth(),
+					curLevel.getDoor().getHeight());
+		}
 
 		// g.drawImage(curLevel.getDoor().getTexture().getImage(),
 		// curLevel.getDoor().getXPos(),
 		// curLevel.getDoor().getYPos(), null);
 
-		g.setColor(Color.cyan);
+		if (curLevel.getPlayer() instanceof Crateon) {
+			g.setColor(Color.cyan);
+		} else {
+			g.setColor(Color.magenta);
+		}
 		g.fillRect(curLevel.getPlayer().getxPos(), curLevel.getPlayer().getyPos(), curLevel.getPlayer().getWidth(),
 				curLevel.getPlayer().getHeight());
 

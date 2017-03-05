@@ -44,20 +44,20 @@ public class GameManager implements ActionListener {
 		BoxCharacter player = null;
 
 		// copy and paste the code generated from the level code generator
-		levelPlatforms.add(new Platform(28, 26, 654, 26, null));
-		levelPlatforms.add(new Platform(28, 53, 26, 1348, null));
-		levelPlatforms.add(new Platform(54, 1375, 501, 26, null));
-		levelPlatforms.add(new Platform(55, 267, 466, 30, null));
-		levelPlatforms.add(new Platform(55, 529, 379, 27, null));
-		levelPlatforms.add(new Platform(55, 1124, 344, 26, null));
-		levelPlatforms.add(new Platform(205, 818, 350, 25, null));
+		levelPlatforms.add(new Platform(28, 26, 654, 50, null));
+		levelPlatforms.add(new Platform(28, 53, 50, 1348, null));
+		levelPlatforms.add(new Platform(54, 1375, 501, 50, null));
+		levelPlatforms.add(new Platform(55, 267, 466, 50, null));
+		levelPlatforms.add(new Platform(55, 529, 379, 50, null));
+		levelPlatforms.add(new Platform(55, 1124, 344, 50, null));
+		levelPlatforms.add(new Platform(205, 818, 350, 50, null));
 		levelPlatforms.add(new Platform(275, 755, 160, 62, null));
-		levelPlatforms.add(new Platform(435, 529, 25, 100, null));
-		levelPlatforms.add(new Platform(461, 602, 344, 27, null));
-		levelPlatforms.add(new Platform(556, 818, 22, 583, null));
-		levelPlatforms.add(new Platform(579, 877, 204, 26, null));
-		levelPlatforms.add(new Platform(683, 26, 25, 102, null));
-		levelPlatforms.add(new Platform(709, 101, 341, 27, null));
+		levelPlatforms.add(new Platform(435, 529, 50, 100, null));
+		levelPlatforms.add(new Platform(461, 602, 344, 50, null));
+		levelPlatforms.add(new Platform(556, 818, 50, 583, null));
+		levelPlatforms.add(new Platform(579, 877, 204, 50, null));
+		levelPlatforms.add(new Platform(683, 26, 50, 102, null));
+		levelPlatforms.add(new Platform(709, 101, 341, 50, null));
 		levelPlatforms.add(new Platform(784, 877, 23, 65, null));
 		levelPlatforms.add(new Platform(806, 602, 25, 102, null));
 		levelPlatforms.add(new Platform(808, 916, 342, 26, null));
@@ -128,7 +128,7 @@ public class GameManager implements ActionListener {
 		// call the main menu to display from the GUI
 		view.goToMainMenu();
 		view.setVisible();
-		startNewGame();
+//		startNewGame();
 	}
 
 	public void autoSave() throws IOException {
@@ -196,6 +196,7 @@ public class GameManager implements ActionListener {
 		view.goToLevel();
 		timer = new Timer((int) 50.0 / 3, this);
 		timer.start();
+		view.initListener();
 	}
 
 	@Override
@@ -205,6 +206,9 @@ public class GameManager implements ActionListener {
 			view.render();
 
 			Level curLevel = curGame.getCurLevel();
+			
+			curLevel.getPlayer().setyPos(curLevel.getPlayer().getyPos() + curLevel.getPlayer().getOwnYVector());
+			curLevel.getPlayer().setxPos(curLevel.getPlayer().getxPos() + curLevel.getPlayer().getOwnXVector());
 
 			if (curLevel.isEndLevel()) {
 				switchLevel();
@@ -241,35 +245,35 @@ public class GameManager implements ActionListener {
 
 				// checks the upper hitbox
 				if (curLevel.checkForPlayerCollision(p.getXPos() + 1, p.getXPos() + p.getHitBox(false).width - 1,
-						p.getYPos(), p.getYPos() + p.getHitBox(false).height)) {
+						p.getYPos(), p.getYPos())) {
 					curLevel.stopPlayer(true);
 					curLevel.getPlayer().setyPos(p.getYPos() - curLevel.getPlayer().getHeight() - 1);
 					curLevel.getPlayer().setHasJumped(false);
 				}
 				// checks the lower hitbox
 				else if (curLevel.checkForPlayerCollision(p.getXPos() + 1, p.getXPos() + p.getHitBox(false).width - 1,
-						p.getYPos() + p.getHitBox(false).height, p.getYPos() + 2 * p.getHitBox(false).height)) {
+						p.getYPos() + p.getHeight(), p.getYPos() + p.getHeight() + 1)) {
 					curLevel.stopPlayer(true);
-					curLevel.getPlayer()
-							.setyPos(p.getYPos() + p.getHitBox(false).height + curLevel.getPlayer().getHeight() + 1);
+					curLevel.getPlayer().setyPos(p.getYPos() + p.getHeight() + 1);
+					curLevel.getPlayer().setHasJumped(false);
 				}
 
-				// checks the left hitbox of the platform
-				if (curLevel.checkForPlayerCollision(p.getXPos(), p.getXPos() + p.getHitBox(true).width,
-						p.getYPos() + 1, p.getYPos() + p.getHitBox(true).height - 1)) {
-					curLevel.stopPlayer(false);
-					curLevel.getPlayer().setxPos(curLevel.getPlayer().getxPos() - 1);
-				}
 				// checks the right hitbox
-				else if (curLevel.checkForPlayerCollision(p.getXPos() + p.getWidth() - p.getHitBox(true).width,
-						p.getXPos() + p.getWidth() + 1, p.getYPos() + 1, p.getYPos() + p.getHitBox(false).height - 1)) {
+				if (curLevel.checkForPlayerCollision(p.getXPos() + p.getWidth(),
+						p.getXPos() + p.getWidth() + 1, p.getYPos() + 1, p.getYPos() + p.getHeight() - 1)) {
 					curLevel.stopPlayer(false);
-					curLevel.getPlayer().setxPos(curLevel.getPlayer().getxPos() + 1);
+					curLevel.getPlayer().setxPos(p.getXPos() + p.getWidth() + 2);
+					curLevel.getPlayer().setHasJumped(false);
+				}
+				// checks the left hitbox of the platform
+				else if (curLevel.checkForPlayerCollision(p.getXPos() - 1, p.getXPos(),
+						p.getYPos() + 1, p.getYPos() + p.getHeight() - 1)) {
+					curLevel.stopPlayer(false);
+					curLevel.getPlayer().setxPos(p.getXPos() - curLevel.getPlayer().getWidth() - 2);
+					curLevel.getPlayer().setHasJumped(false);
 				}
 			}
-			curLevel.getPlayer().setyPos(curLevel.getPlayer().getyPos() + curLevel.getPlayer().getOwnYVector());
-			curLevel.getPlayer().setxPos(curLevel.getPlayer().getxPos() + curLevel.getPlayer().getOwnXVector());
-
+			
 		} else if (e.getSource() instanceof JButton) {
 			JButton mainMenuButton = (JButton) e.getSource();
 

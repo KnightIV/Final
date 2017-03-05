@@ -8,7 +8,7 @@ import javax.swing.Timer;
 
 abstract public class BoxCharacter implements ActionListener {
 
-	public static final int GRAVITY = 1, JUMP = 30, MOVE = 5;
+	public static final int GRAVITY = 1, JUMP = 16, MOVE = 5, MAX_FALL_SPEED = 17;
 	private int xPos, yPos, ownXVector, ownYVector, otherYVector, otherXVector, width, height;
 	private Image image;
 	protected boolean isVerticalStopped = false, isOnButton = false, hasJumped = false;
@@ -25,22 +25,14 @@ abstract public class BoxCharacter implements ActionListener {
 		jumpTimer.start();
 	}
 
-	/**
-	 * Empty method, since the actual class is in the child classes
-	 * 
-	 * @param keyCodePressed
-	 *            - the key pressed to activate the power
-	 */
-	public void playerPowerActivate(int keyCodePressed) {
-
-	}
+	abstract public void playerPowerActivate(int keyCodePressed);
 
 	public void moveRight() {
-		xPos += ownXVector + otherXVector;
+		this.setOwnXVector(MOVE);
 	}
 
 	public void moveLeft() {
-		moveRight();
+		this.setOwnXVector(-MOVE);
 	}
 
 	public void jump() {
@@ -228,8 +220,8 @@ abstract public class BoxCharacter implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if (!isVerticalStopped) {
-			ownYVector += GRAVITY / ((int) 50.0 / 3);
+		if (!isVerticalStopped && ownYVector != Math.abs(MAX_FALL_SPEED)) {
+			ownYVector += GRAVITY;
 		}
 	}
 }

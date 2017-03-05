@@ -30,8 +30,8 @@ public class MainGUI {
 		manual = new Manual(gameManager);
 		levelDisplay = new LevelDisplay(curLevel);
 
-		// goToMainMenu();
-		goToLevel();
+		goToMainMenu();
+//		goToLevel();
 		frame.getContentPane().add(curDisplay);
 	}
 
@@ -41,10 +41,13 @@ public class MainGUI {
 
 	public void setGame(Game curGame) {
 		this.curGame = curGame;
+	}
+	
+	public void initListener() {
 		input = new InputControl(curGame);
 		levelDisplay.setFocusable(true);
 		levelDisplay.requestFocusInWindow();
-		levelDisplay.addKeyListener(input);
+		levelDisplay.addKeyListener(input);		
 	}
 
 	public void swapLevel(Level curLevel) {
@@ -54,6 +57,10 @@ public class MainGUI {
 
 	public void goToMainMenu() {
 		curDisplay = mainMenu;
+		frame.getContentPane().remove(mainMenu);
+		frame.getContentPane().add(mainMenu);
+		frame.validate();
+		mainMenu.repaint();
 	}
 
 	public void goToManual() {
@@ -62,6 +69,10 @@ public class MainGUI {
 
 	public void goToLevel() {
 		curDisplay = levelDisplay;
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(levelDisplay);
+		frame.validate();
+		levelDisplay.repaint();
 	}
 
 	public void setVisible() {

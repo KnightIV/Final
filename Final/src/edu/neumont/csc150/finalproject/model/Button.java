@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 
 public class Button {
 
-	private int width = 30, height = 30, xPos, yPos;
+	private int width = 30, height = 20, xPos, yPos;
 	private ImageIcon texture;
 	private Door doorLink;
 	private ArrayList<Laser> laserLinks;
