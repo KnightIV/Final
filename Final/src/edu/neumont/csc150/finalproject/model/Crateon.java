@@ -115,4 +115,8 @@ public class Crateon extends BoxCharacter {
 			break;
 		}
 	}
+	
+	public GravityDirection getGravityDirection() {
+		return gravityDir;
+	}
 }

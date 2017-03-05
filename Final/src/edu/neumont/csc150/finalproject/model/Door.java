@@ -3,7 +3,7 @@ package edu.neumont.csc150.finalproject.model;
 import javax.swing.ImageIcon;
 
 public class Door {
-	private int width = 80, height = 200;
+	private int width = 60, height = 220;
 	private int xPos, yPos;
 	private ImageIcon texture;
 	private boolean isOpen;

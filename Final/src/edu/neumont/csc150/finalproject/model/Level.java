@@ -39,10 +39,10 @@ public class Level {
 	}
 
 	public void playerPowerActivate(int keyCodePressed) {
-		boolean isFarFromPlatform = true;
+		boolean isFarFromPlatform = false;
 		for (Platform p : platforms) {
 
-			if (!isFarFromPlatform) {
+			if (isFarFromPlatform) {
 				break;
 			}
 
@@ -50,7 +50,7 @@ public class Level {
 			isFarFromPlatform = keyCodePressed == KeyEvent.VK_D && !checkForPlayerCollision(p.getXPos() + Casey.TELEPORT_DISTANCE,
 					p.getXPos() + p.getWidth() + Casey.TELEPORT_DISTANCE, p.getYPos(), p.getYPos() + p.getHeight());
 
-			if (!isFarFromPlatform) {
+			if (isFarFromPlatform) {
 				break;
 			}
 
@@ -58,7 +58,7 @@ public class Level {
 			isFarFromPlatform = keyCodePressed == KeyEvent.VK_A && !checkForPlayerCollision(p.getXPos() - Casey.TELEPORT_DISTANCE,
 					p.getXPos() + p.getWidth() - Casey.TELEPORT_DISTANCE, p.getYPos(), p.getYPos() + p.getHeight());
 
-			if (!isFarFromPlatform) {
+			if (isFarFromPlatform) {
 				break;
 			}
 
@@ -66,7 +66,7 @@ public class Level {
 			isFarFromPlatform = keyCodePressed == KeyEvent.VK_S && !checkForPlayerCollision(p.getXPos(), p.getXPos() + p.getWidth(),
 					p.getYPos() + Casey.TELEPORT_DISTANCE, p.getYPos() + p.getHeight() + Casey.TELEPORT_DISTANCE);
 
-			if (!isFarFromPlatform) {
+			if (isFarFromPlatform) {
 				break;
 			}
 
@@ -100,17 +100,6 @@ public class Level {
 	public boolean isEndLevel() {
 		return checkForPlayerCollision(finalDoor.getXPos(), finalDoor.getXPos() + finalDoor.getWidth(),
 				finalDoor.getYPos(), finalDoor.getYPos() + finalDoor.getHeight()) && finalDoor.isOpen();
-	}
-
-	public boolean checkForButtonTriggered() {
-		for (Button b : buttons) {
-			if (checkForPlayerCollision(b.getXPos(), b.getXPos() + b.getWidth(), b.getYPos(),
-					b.getYPos() + b.getHeight())) {
-				b.trigger();
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public void movePlayer(boolean isRight) {

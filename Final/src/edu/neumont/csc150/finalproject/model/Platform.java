@@ -95,6 +95,34 @@ public class Platform implements ActionListener {
 		return texture;
 	}
 	
+	/**
+	 * @return the xDisplacement
+	 */
+	public int getxDisplacement() {
+		return xDisplacement;
+	}
+
+	/**
+	 * @return the yDisplacement
+	 */
+	public int getyDisplacement() {
+		return yDisplacement;
+	}
+
+	/**
+	 * @return the isVerticalMove
+	 */
+	public boolean isVerticalMove() {
+		return isVerticalMove;
+	}
+
+	/**
+	 * @return the isHorizontalMove
+	 */
+	public boolean isHorizontalMove() {
+		return isHorizontalMove;
+	}
+
 	public Dimension getHitBox(boolean isSide) {
 		if (isSide) {
 			return sideHitBox;

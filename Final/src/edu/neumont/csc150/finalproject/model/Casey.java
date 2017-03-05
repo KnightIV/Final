@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 
 public class Casey extends BoxCharacter {
 
-	public static final int TELEPORT_DISTANCE = 30;
+	public static final int TELEPORT_DISTANCE = 80;
 	private boolean hasTeleported;
 
 	public Casey(int startX, int startY) {
@@ -39,12 +39,6 @@ public class Casey extends BoxCharacter {
 				this.setyPos(this.getyPos() + TELEPORT_DISTANCE);
 			}
 			toggleTeleported();
-
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 			
 			toggleTeleported();
 		}
@@ -58,12 +52,6 @@ public class Casey extends BoxCharacter {
 				this.setxPos(this.getxPos() - TELEPORT_DISTANCE);
 			}
 			toggleTeleported();
-			
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 			
 			toggleTeleported();
 		}

@@ -3,8 +3,6 @@ package edu.neumont.csc150.finalproject.model;
 public class Game {
 
 	private Level curLevel;
-	private Casey casey;
-	private Crateon crateon;
 	
 	public Game(Level curLevel) {
 		this.curLevel = curLevel;

@@ -38,7 +38,7 @@ abstract public class BoxCharacter implements ActionListener {
 	public void jump() {
 		if (!hasJumped) {
 			this.yPos--;
-			ownYVector = -30 + otherYVector;
+			ownYVector = -JUMP + otherYVector;
 			hasJumped = true;
 		}
 	}

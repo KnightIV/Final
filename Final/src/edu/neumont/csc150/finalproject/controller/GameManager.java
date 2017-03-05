@@ -128,7 +128,7 @@ public class GameManager implements ActionListener {
 		// call the main menu to display from the GUI
 		view.goToMainMenu();
 		view.setVisible();
-//		startNewGame();
+		// startNewGame();
 	}
 
 	public void autoSave() throws IOException {
@@ -206,24 +206,26 @@ public class GameManager implements ActionListener {
 			view.render();
 
 			Level curLevel = curGame.getCurLevel();
-			
-			curLevel.getPlayer().setyPos(curLevel.getPlayer().getyPos() + curLevel.getPlayer().getOwnYVector());
-			curLevel.getPlayer().setxPos(curLevel.getPlayer().getxPos() + curLevel.getPlayer().getOwnXVector());
+			BoxCharacter curPlayer = curLevel.getPlayer();
+
+			curPlayer.setyPos(curLevel.getPlayer().getyPos() + curLevel.getPlayer().getOwnYVector());
+			curPlayer.setxPos(curLevel.getPlayer().getxPos() + curLevel.getPlayer().getOwnXVector());
 
 			if (curLevel.isEndLevel()) {
 				switchLevel();
 			}
 
-			if (curLevel.getPlayer().getxPos() < -curLevel.getPlayer().getWidth()
-					|| curLevel.getPlayer().getxPos() > view.getWindowWidth()
-					|| curLevel.getPlayer().getyPos() < -curLevel.getPlayer().getHeight()
-					|| curLevel.getPlayer().getyPos() > view.getWindowHeight()) {
+			// resets the game if the player falls out of the screen
+			if (curPlayer.getxPos() < -curLevel.getPlayer().getWidth()
+					|| curPlayer.getxPos() > view.getWindowWidth()
+					|| curPlayer.getyPos() < -curLevel.getPlayer().getHeight()
+					|| curPlayer.getyPos() > view.getWindowHeight()) {
 				curGame.reset();
 			}
 
 			for (Laser l : curLevel.getLasers()) {
 				if (curLevel.checkForPlayerCollision(l.getXPos(), l.getXPos() + l.getWidth(), l.getYPos(),
-						l.getYPos() + l.getHeight())) {
+						l.getYPos() + l.getHeight()) && l.isOn()) {
 					// display the death screen in the GUI
 
 					break;
@@ -232,48 +234,75 @@ public class GameManager implements ActionListener {
 
 			// checks all the buttons in the level to see if they have been
 			// triggered
-			if (!curLevel.getPlayer().isOnButton() || true) {
-				boolean hasTriggered = curLevel.checkForButtonTriggered();
-				if (hasTriggered) {
-					curLevel.getPlayer().setIsOnButton(true);
-				} else {
-					curLevel.getPlayer().setIsOnButton(false);
+
+			for (Button b : curLevel.getButtons()) {
+				boolean isOnButton = curLevel.checkForPlayerCollision(b.getXPos(), b.getXPos() + b.getWidth(),
+						b.getYPos(), b.getYPos() + b.getHeight());
+
+				if (isOnButton && !curPlayer.isOnButton()) {
+					b.trigger();
+					curPlayer.setIsOnButton(true);
+					break;
+				} else if (!isOnButton) {
+					curPlayer.setIsOnButton(false);
 				}
 			}
 
+			// boolean hasTriggered = curLevel.checkForButtonTriggered();
+			// if (hasTriggered && curLevel.getPlayer().isOnButton()) {
+			// curLevel.getPlayer().setIsOnButton(true);
+			// } else {
+			// curLevel.getPlayer().setIsOnButton(false);
+			// }
+
 			for (Platform p : curLevel.getPlatforms()) {
+				
+				Crateon crateon = null;
+				
+				if (curPlayer instanceof Crateon) {
+					crateon = (Crateon) curPlayer;
+				}
 
 				// checks the upper hitbox
 				if (curLevel.checkForPlayerCollision(p.getXPos() + 1, p.getXPos() + p.getHitBox(false).width - 1,
 						p.getYPos(), p.getYPos())) {
 					curLevel.stopPlayer(true);
-					curLevel.getPlayer().setyPos(p.getYPos() - curLevel.getPlayer().getHeight() - 1);
-					curLevel.getPlayer().setHasJumped(false);
+					curPlayer.setyPos(p.getYPos() - curLevel.getPlayer().getHeight() - 1);
+					if (crateon.getGravityDirection() == GravityDirection.DOWN) {
+						curPlayer.setHasJumped(false);						
+					}
 				}
 				// checks the lower hitbox
 				else if (curLevel.checkForPlayerCollision(p.getXPos() + 1, p.getXPos() + p.getHitBox(false).width - 1,
 						p.getYPos() + p.getHeight(), p.getYPos() + p.getHeight() + 1)) {
 					curLevel.stopPlayer(true);
-					curLevel.getPlayer().setyPos(p.getYPos() + p.getHeight() + 1);
-					curLevel.getPlayer().setHasJumped(false);
+					curPlayer.setyPos(p.getYPos() + p.getHeight() + 1);
+					if (crateon.getGravityDirection() == GravityDirection.UP) {
+						curPlayer.setHasJumped(false);						
+					}
 				}
 
 				// checks the right hitbox
-				if (curLevel.checkForPlayerCollision(p.getXPos() + p.getWidth(),
-						p.getXPos() + p.getWidth() + 1, p.getYPos() + 1, p.getYPos() + p.getHeight() - 1)) {
-					curLevel.stopPlayer(false);
-					curLevel.getPlayer().setxPos(p.getXPos() + p.getWidth() + 2);
-					curLevel.getPlayer().setHasJumped(false);
-				}
-				// checks the left hitbox of the platform
-				else if (curLevel.checkForPlayerCollision(p.getXPos() - 1, p.getXPos(),
+				if (curLevel.checkForPlayerCollision(p.getXPos() + p.getWidth(), p.getXPos() + p.getWidth() + 1,
 						p.getYPos() + 1, p.getYPos() + p.getHeight() - 1)) {
 					curLevel.stopPlayer(false);
-					curLevel.getPlayer().setxPos(p.getXPos() - curLevel.getPlayer().getWidth() - 2);
-					curLevel.getPlayer().setHasJumped(false);
+					curPlayer.setxPos(p.getXPos() + p.getWidth() + 2);
+					if (crateon.getGravityDirection() == GravityDirection.LEFT) {
+						curPlayer.setHasJumped(false);						
+					}
+				}
+				// checks the left hitbox of the platform
+				else if (curLevel.checkForPlayerCollision(p.getXPos() - 1, p.getXPos(), p.getYPos() + 1,
+						p.getYPos() + p.getHeight() - 1)) {
+					curLevel.stopPlayer(false);
+					curPlayer.setxPos(p.getXPos() - curLevel.getPlayer().getWidth() - 2);
+					if (crateon.getGravityDirection() == GravityDirection.RIGHT) {
+						curPlayer.setHasJumped(false);						
+					}
 				}
 			}
-			
+
+			// main menu options
 		} else if (e.getSource() instanceof JButton) {
 			JButton mainMenuButton = (JButton) e.getSource();
 
