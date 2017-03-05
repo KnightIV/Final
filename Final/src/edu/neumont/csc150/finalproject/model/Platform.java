@@ -1,24 +1,26 @@
 package edu.neumont.csc150.finalproject.model;
 
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.Timer;
+
+import edu.neumont.csc150.finalproject.controller.GameManager;
 
 public class Platform implements ActionListener {
 
 	private Dimension sideHitBox, topBottomHitBox;
 	
 	private int xPos, xVector, xDisplacement, yPos, yDisplacement, yVector, width, height;
-	private ImageIcon texture;
+	private Image texture;
 	private Timer moveTimer;
 	private double counter = 0;
 	private boolean isVerticalMove;
 	private boolean isHorizontalMove;
 
-	public Platform(int x, int y, int width, int height, ImageIcon texture, int xDisplacement, int yDisplacement,
+	public Platform(int x, int y, int width, int height, Image texture, int xDisplacement, int yDisplacement,
 			boolean isVerticalMove, boolean isHorizontalMove) {
 		this.xPos = x;
 		this.yPos = y;
@@ -40,7 +42,7 @@ public class Platform implements ActionListener {
 		initTimer();
 	}
 
-	public Platform(int x, int y, int width, int height, ImageIcon texture) {
+	public Platform(int x, int y, int width, int height, Image texture) {
 		this.xPos = x;
 		this.yPos = y;
 		this.width = width;
@@ -55,7 +57,7 @@ public class Platform implements ActionListener {
 	}
 
 	public void initTimer() {
-		moveTimer = new Timer((int) 100.0 / 3, this);
+		moveTimer = new Timer(GameManager.FRAME_RATE, this);
 		moveTimer.start();
 	}
 
@@ -91,7 +93,7 @@ public class Platform implements ActionListener {
 		return height;
 	}
 
-	public ImageIcon getTexture() {
+	public Image getTexture() {
 		return texture;
 	}
 	

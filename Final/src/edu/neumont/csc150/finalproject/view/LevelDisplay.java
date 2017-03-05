@@ -46,10 +46,8 @@ public class LevelDisplay extends JPanel {
 
 		g.setColor(Color.blue);
 		for (Platform p : curLevel.getPlatforms()) {
-			g.fillRect(p.getXPos(), p.getYPos(), p.getWidth(), p.getHeight());
-
-			// g.drawImage(p.getTexture().getImage(), p.getXPos(), p.getYPos(),
-			// p.getWidth(), p.getHeight(), null);
+			 g.drawImage(p.getTexture(), p.getXPos(), p.getYPos(),
+			 p.getWidth(), p.getHeight(), null);
 		}
 
 		g.setColor(Color.red);

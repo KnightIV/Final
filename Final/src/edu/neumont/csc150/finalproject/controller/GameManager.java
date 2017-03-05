@@ -1,5 +1,6 @@
 package edu.neumont.csc150.finalproject.controller;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -11,14 +12,25 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.Timer;
 
-import edu.neumont.csc150.finalproject.model.*;
-import edu.neumont.csc150.finalproject.view.*;
+import edu.neumont.csc150.finalproject.model.BoxCharacter;
+import edu.neumont.csc150.finalproject.model.Button;
+import edu.neumont.csc150.finalproject.model.Casey;
+import edu.neumont.csc150.finalproject.model.Crateon;
+import edu.neumont.csc150.finalproject.model.Door;
+import edu.neumont.csc150.finalproject.model.Game;
+import edu.neumont.csc150.finalproject.model.GravityDirection;
+import edu.neumont.csc150.finalproject.model.Laser;
+import edu.neumont.csc150.finalproject.model.Level;
+import edu.neumont.csc150.finalproject.model.Platform;
+import edu.neumont.csc150.finalproject.view.MainGUI;
 
 public class GameManager implements ActionListener {
 
+	public static final int FRAME_RATE = (int) 50.0 / 3;
 	private Game curGame;
 	private static final File FILE_SAVE = new File("save.box");
 	private Timer timer;
@@ -27,63 +39,72 @@ public class GameManager implements ActionListener {
 	private MainGUI view;
 
 	public GameManager() {
-		createLevels();
+		try {
+			createLevels();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	private void createLevels() {
+	private void createLevels() throws IOException {
 		levels.add(level1());
 		// levels.add(level2());
 		// levels.add(level3());
 	}
 
-	private Level level1() {
+	private Level level1() throws IOException {
 		ArrayList<Platform> levelPlatforms = new ArrayList<>();
 		ArrayList<Laser> levelLasers = new ArrayList<>();
 		ArrayList<Button> levelButtons = new ArrayList<>();
 		Door doorBlock = null;
 		BoxCharacter player = null;
+		Image platformImage = ImageIO.read(new File("resources/platformTile.png"));
 
 		// copy and paste the code generated from the level code generator
-		levelPlatforms.add(new Platform(28, 26, 654, 50, null));
-		levelPlatforms.add(new Platform(28, 53, 50, 1348, null));
-		levelPlatforms.add(new Platform(54, 1375, 501, 50, null));
-		levelPlatforms.add(new Platform(55, 267, 466, 50, null));
-		levelPlatforms.add(new Platform(55, 529, 379, 50, null));
-		levelPlatforms.add(new Platform(55, 1124, 344, 50, null));
-		levelPlatforms.add(new Platform(205, 818, 350, 50, null));
-		levelPlatforms.add(new Platform(275, 755, 160, 62, null));
-		levelPlatforms.add(new Platform(435, 529, 50, 100, null));
-		levelPlatforms.add(new Platform(461, 602, 344, 50, null));
-		levelPlatforms.add(new Platform(556, 818, 50, 583, null));
-		levelPlatforms.add(new Platform(579, 877, 204, 50, null));
-		levelPlatforms.add(new Platform(683, 26, 50, 102, null));
-		levelPlatforms.add(new Platform(709, 101, 341, 50, null));
-		levelPlatforms.add(new Platform(784, 877, 23, 65, null));
-		levelPlatforms.add(new Platform(806, 602, 25, 102, null));
-		levelPlatforms.add(new Platform(808, 916, 342, 26, null));
-		levelPlatforms.add(new Platform(832, 678, 340, 26, null));
-		levelPlatforms.add(new Platform(1051, 101, 25, 124, null));
-		levelPlatforms.add(new Platform(1077, 199, 352, 26, null));
-		levelPlatforms.add(new Platform(1151, 916, 22, 176, null));
-		levelPlatforms.add(new Platform(1173, 678, 26, 122, null));
-		levelPlatforms.add(new Platform(1174, 1067, 355, 25, null));
-		levelPlatforms.add(new Platform(1200, 775, 352, 25, null));
-		levelPlatforms.add(new Platform(1430, 199, 25, 160, null));
-		levelPlatforms.add(new Platform(1456, 334, 355, 25, null));
-		levelPlatforms.add(new Platform(1530, 1067, 23, 188, null));
-		levelPlatforms.add(new Platform(1553, 775, 25, 160, null));
-		levelPlatforms.add(new Platform(1554, 1230, 278, 25, null));
-		levelPlatforms.add(new Platform(1579, 909, 355, 26, null));
-		levelPlatforms.add(new Platform(1812, 334, 25, 295, null));
-		levelPlatforms.add(new Platform(1833, 1230, 22, 173, null));
-		levelPlatforms.add(new Platform(1838, 517, 638, 25, null));
-		levelPlatforms.add(new Platform(1856, 1377, 620, 26, null));
-		levelPlatforms.add(new Platform(1935, 909, 25, 209, null));
-		levelPlatforms.add(new Platform(1961, 1092, 145, 26, null));
-		levelPlatforms.add(new Platform(2107, 908, 23, 210, null));
-		levelPlatforms.add(new Platform(2477, 517, 23, 886, null));
+		levelPlatforms.add(new Platform(28, 26, 654, 26, platformImage));
+		levelPlatforms.add(new Platform(28, 53, 26, 1348, platformImage));
+		levelPlatforms.add(new Platform(54, 1375, 501, 26, platformImage));
+		levelPlatforms.add(new Platform(55, 267, 466, 30, platformImage));
+		levelPlatforms.add(new Platform(55, 529, 379, 27, platformImage));
+		levelPlatforms.add(new Platform(55, 1124, 344, 26, platformImage));
+		levelPlatforms.add(new Platform(205, 818, 350, 25, platformImage));
+		levelPlatforms.add(new Platform(275, 755, 160, 62, platformImage));
+		levelPlatforms.add(new Platform(435, 529, 25, 100, platformImage));
+		levelPlatforms.add(new Platform(461, 602, 344, 27, platformImage));
+		levelPlatforms.add(new Platform(556, 818, 22, 583, platformImage));
+		levelPlatforms.add(new Platform(579, 877, 204, 26, platformImage));
+		levelPlatforms.add(new Platform(683, 26, 25, 102, platformImage));
+		levelPlatforms.add(new Platform(709, 101, 341, 27, platformImage));
+		levelPlatforms.add(new Platform(784, 877, 23, 65, platformImage));
+		levelPlatforms.add(new Platform(806, 602, 25, 102, platformImage));
+		levelPlatforms.add(new Platform(808, 916, 342, 26, platformImage));
+		levelPlatforms.add(new Platform(832, 678, 340, 26, platformImage));
+		levelPlatforms.add(new Platform(1051, 101, 25, 124, platformImage));
+		levelPlatforms.add(new Platform(1077, 199, 352, 26, platformImage));
+		levelPlatforms.add(new Platform(1151, 916, 22, 176, platformImage));
+		levelPlatforms.add(new Platform(1173, 678, 26, 122, platformImage));
+		levelPlatforms.add(new Platform(1174, 1067, 355, 25, platformImage));
+		levelPlatforms.add(new Platform(1200, 775, 352, 25, platformImage));
+		levelPlatforms.add(new Platform(1430, 199, 25, 160, platformImage));
+		levelPlatforms.add(new Platform(1456, 334, 355, 25, platformImage));
+		levelPlatforms.add(new Platform(1530, 1067, 23, 188, platformImage));
+		levelPlatforms.add(new Platform(1553, 775, 25, 160, platformImage));
+		levelPlatforms.add(new Platform(1554, 1230, 278, 25, platformImage));
+		levelPlatforms.add(new Platform(1579, 909, 355, 26, platformImage));
+		levelPlatforms.add(new Platform(1812, 334, 25, 295, platformImage));
+		levelPlatforms.add(new Platform(1833, 1230, 22, 173, platformImage));
+		levelPlatforms.add(new Platform(1838, 517, 638, 25, platformImage));
+		levelPlatforms.add(new Platform(1856, 1377, 620, 26, platformImage));
+		levelPlatforms.add(new Platform(1935, 909, 25, 209, platformImage));
+		levelPlatforms.add(new Platform(1961, 1092, 145, 26, platformImage));
+		levelPlatforms.add(new Platform(2107, 908, 23, 210, platformImage));
+		levelPlatforms.add(new Platform(2477, 517, 23, 886, platformImage));
+		
 		levelLasers.add(new Laser(1174, 995, 760, 25, true));
 		levelLasers.add(new Laser(1200, 713, 1276, 25, true));
+		
+		doorBlock = new Door(65, 58);
+		player = new Crateon(156, 1267);
 
 		ArrayList<Laser> firstButtonLasers = new ArrayList<>();
 		firstButtonLasers.add(levelLasers.get(1));
@@ -194,7 +215,7 @@ public class GameManager implements ActionListener {
 		view.setGame(curGame);
 		view.swapLevel(levels.get(indexLevel));
 		view.goToLevel();
-		timer = new Timer((int) 50.0 / 3, this);
+		timer = new Timer(FRAME_RATE, this);
 		timer.start();
 		view.initListener();
 	}
@@ -268,8 +289,10 @@ public class GameManager implements ActionListener {
 						p.getYPos(), p.getYPos())) {
 					curLevel.stopPlayer(true);
 					curPlayer.setyPos(p.getYPos() - curLevel.getPlayer().getHeight() - 1);
-					if (crateon.getGravityDirection() == GravityDirection.DOWN) {
+					if (crateon != null && crateon.getGravityDirection() == GravityDirection.DOWN) {
 						curPlayer.setHasJumped(false);						
+					} else if (curPlayer instanceof Casey) {
+						curPlayer.setHasJumped(false);
 					}
 				}
 				// checks the lower hitbox
@@ -277,7 +300,7 @@ public class GameManager implements ActionListener {
 						p.getYPos() + p.getHeight(), p.getYPos() + p.getHeight() + 1)) {
 					curLevel.stopPlayer(true);
 					curPlayer.setyPos(p.getYPos() + p.getHeight() + 1);
-					if (crateon.getGravityDirection() == GravityDirection.UP) {
+					if (crateon != null && crateon.getGravityDirection() == GravityDirection.UP) {
 						curPlayer.setHasJumped(false);						
 					}
 				}
@@ -287,7 +310,7 @@ public class GameManager implements ActionListener {
 						p.getYPos() + 1, p.getYPos() + p.getHeight() - 1)) {
 					curLevel.stopPlayer(false);
 					curPlayer.setxPos(p.getXPos() + p.getWidth() + 2);
-					if (crateon.getGravityDirection() == GravityDirection.LEFT) {
+					if (crateon != null && crateon.getGravityDirection() == GravityDirection.LEFT) {
 						curPlayer.setHasJumped(false);						
 					}
 				}
@@ -296,7 +319,7 @@ public class GameManager implements ActionListener {
 						p.getYPos() + p.getHeight() - 1)) {
 					curLevel.stopPlayer(false);
 					curPlayer.setxPos(p.getXPos() - curLevel.getPlayer().getWidth() - 2);
-					if (crateon.getGravityDirection() == GravityDirection.RIGHT) {
+					if (crateon != null && crateon.getGravityDirection() == GravityDirection.RIGHT) {
 						curPlayer.setHasJumped(false);						
 					}
 				}

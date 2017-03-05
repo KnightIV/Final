@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
+import edu.neumont.csc150.finalproject.controller.GameManager;
+
 abstract public class BoxCharacter implements ActionListener {
 
 	public static final int GRAVITY = 1, JUMP = 16, MOVE = 5, MAX_FALL_SPEED = 17;
@@ -21,7 +23,7 @@ abstract public class BoxCharacter implements ActionListener {
 		this.setyPos(startY);
 		this.width = 30;
 		this.height = 30;
-		jumpTimer = new Timer((int) 50.0 / 3, this);
+		jumpTimer = new Timer(GameManager.FRAME_RATE, this);
 		jumpTimer.start();
 	}
 

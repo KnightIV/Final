@@ -41,41 +41,45 @@ public class Level {
 	public void playerPowerActivate(int keyCodePressed) {
 		boolean isFarFromPlatform = false;
 		for (Platform p : platforms) {
-
 			if (isFarFromPlatform) {
 				break;
 			}
 
 			// checks the right side of Casey
-			isFarFromPlatform = keyCodePressed == KeyEvent.VK_D && !checkForPlayerCollision(p.getXPos() + Casey.TELEPORT_DISTANCE,
-					p.getXPos() + p.getWidth() + Casey.TELEPORT_DISTANCE, p.getYPos(), p.getYPos() + p.getHeight());
+			isFarFromPlatform = keyCodePressed == KeyEvent.VK_D
+					&& !checkForPlayerCollision(p.getXPos() + Casey.TELEPORT_DISTANCE,
+							p.getXPos() + p.getWidth() + Casey.TELEPORT_DISTANCE, p.getYPos(),
+							p.getYPos() + p.getHeight());
 
 			if (isFarFromPlatform) {
 				break;
 			}
 
 			// checks the left side of Casey
-			isFarFromPlatform = keyCodePressed == KeyEvent.VK_A && !checkForPlayerCollision(p.getXPos() - Casey.TELEPORT_DISTANCE,
-					p.getXPos() + p.getWidth() - Casey.TELEPORT_DISTANCE, p.getYPos(), p.getYPos() + p.getHeight());
+			isFarFromPlatform = keyCodePressed == KeyEvent.VK_A
+					&& !checkForPlayerCollision(p.getXPos() - Casey.TELEPORT_DISTANCE,
+							p.getXPos() + p.getWidth() - Casey.TELEPORT_DISTANCE, p.getYPos(),
+							p.getYPos() + p.getHeight());
 
 			if (isFarFromPlatform) {
 				break;
 			}
 
 			// checks the bottom side of Casey
-			isFarFromPlatform = keyCodePressed == KeyEvent.VK_S && !checkForPlayerCollision(p.getXPos(), p.getXPos() + p.getWidth(),
-					p.getYPos() + Casey.TELEPORT_DISTANCE, p.getYPos() + p.getHeight() + Casey.TELEPORT_DISTANCE);
+			isFarFromPlatform = keyCodePressed == KeyEvent.VK_S && !checkForPlayerCollision(p.getXPos(),
+					p.getXPos() + p.getWidth(), p.getYPos() + Casey.TELEPORT_DISTANCE,
+					p.getYPos() + p.getHeight() + Casey.TELEPORT_DISTANCE);
 
 			if (isFarFromPlatform) {
 				break;
 			}
 
 			// checks the top side of Casey
-			isFarFromPlatform = keyCodePressed == KeyEvent.VK_W && !checkForPlayerCollision(p.getXPos(), p.getXPos() + p.getWidth(),
-					p.getYPos() - Casey.TELEPORT_DISTANCE, p.getYPos() + p.getHeight() - Casey.TELEPORT_DISTANCE);
+			isFarFromPlatform = keyCodePressed == KeyEvent.VK_W && !checkForPlayerCollision(p.getXPos(),
+					p.getXPos() + p.getWidth(), p.getYPos() - Casey.TELEPORT_DISTANCE,
+					p.getYPos() + p.getHeight() - Casey.TELEPORT_DISTANCE);
 
 		}
-
 		if (player instanceof Casey && isFarFromPlatform) {
 			player.playerPowerActivate(keyCodePressed);
 		} else if (player instanceof Crateon) {
@@ -84,15 +88,6 @@ public class Level {
 	}
 
 	public boolean checkForPlayerCollision(int leftObjX, int rightObjX, int upObjY, int downObjY) {
-		if (player.getxPos() <= rightObjX) {
-			if (player.getxPos() + player.getWidth() >= leftObjX) {
-				if (player.getyPos() <= downObjY) {
-					if (player.getyPos() + player.getHeight() >= upObjY) {
-						return true;
-					}
-				}
-			}
-		}
 		return (player.getxPos() <= rightObjX) && (player.getxPos() + player.getWidth() >= leftObjX)
 				&& (player.getyPos() <= downObjY) && (player.getyPos() + player.getHeight() >= upObjY);
 	}

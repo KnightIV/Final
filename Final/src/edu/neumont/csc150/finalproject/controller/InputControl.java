@@ -46,16 +46,14 @@ public class InputControl implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		if (keysPressed.contains(arg0.getKeyCode())) {
+		if (keysPressed.contains(arg0.getExtendedKeyCode())) {
 			keysPressed.remove((Integer) arg0.getKeyCode());
 		}
+		keyControls();
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-		if (!keysPressed.contains(arg0.getKeyCode())) {
-			keysPressed.add(arg0.getKeyCode());
-		}
-		keyControls();
+		
 	}
 }
