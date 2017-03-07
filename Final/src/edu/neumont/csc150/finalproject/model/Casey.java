@@ -7,12 +7,16 @@ import edu.neumont.csc150.finalproject.controller.GameManager;
 
 public class Casey extends BoxCharacter {
 
+	private static final long serialVersionUID = -7279892218969746473L;
+	
 	public static final int TELEPORT_DISTANCE = 200;
 	private boolean hasTeleported = true;
 	private double teleportTime = -2;
 
 	public Casey(int startX, int startY) {
 		super(startX, startY);
+		this.setWidth(375/8);
+		this.setHeight(713/8);
 	}
 
 	public void playerPowerActivate(int keyCodePressed) {

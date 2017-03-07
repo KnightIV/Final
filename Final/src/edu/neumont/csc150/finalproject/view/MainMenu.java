@@ -19,7 +19,7 @@ public class MainMenu extends JPanel{
 	
 	public MainMenu(GameManager gameManager) {
 		this.gameManager = gameManager;
-		this.setLayout(new GridLayout(4, 3));
+		this.setLayout(new GridLayout(9, 5));
 		initMenu();
 	}
 	
@@ -33,18 +33,41 @@ public class MainMenu extends JPanel{
 		manual = new JButton("Manual");
 		manual.addActionListener(gameManager);
 		
+		for (int i = 0; i < 5; i++) {
+			this.add(new JPanel());
+		}
+		
+		this.add(new JPanel());
 		this.add(new JPanel());
 		this.add(newGame);
 		this.add(new JPanel());
+		this.add(new JPanel());
 		
+		for (int i = 0; i < 5; i++) {
+			this.add(new JPanel());
+		}
+		
+		this.add(new JPanel());
 		this.add(new JPanel());
 		this.add(loadGame);
 		this.add(new JPanel());
+		this.add(new JPanel());
 		
+		for (int i = 0; i < 5; i++) {
+			this.add(new JPanel());
+		}
+		
+		this.add(new JPanel());
 		this.add(new JPanel());
 		this.add(manual);
 		this.add(new JPanel());
+		this.add(new JPanel());
 		
+		for (int i = 0; i < 5; i++) {
+			this.add(new JPanel());
+		}
+		
+		this.add(new JPanel());
 		this.add(new JPanel());
 		this.add(quitGame);
 	}

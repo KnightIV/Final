@@ -1,12 +1,21 @@
 package edu.neumont.csc150.finalproject.model;
 
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Level {
+/*
+ * TODO move the Image background to an ArrayList in the GameManager class, one for each level
+ * 
+ * This will prevent the NotSerializableException fo image
+ */
+public class Level implements Serializable {
 
+	private static final long serialVersionUID = -5658795115954727298L;
+	
+	private int id;
+	private static int counterID = 0;
 	private ArrayList<Platform> platforms;
 	private ArrayList<Dimension> initPlatformPos = new ArrayList<>();
 	private ArrayList<Laser> lasers;
@@ -14,11 +23,9 @@ public class Level {
 	private Door finalDoor;
 	private BoxCharacter player;
 	private Dimension initPlayerPos;
-	private Image background;
 	private ArrayList<Button> buttons;
 
-	public Level(ArrayList<Platform> platforms, ArrayList<Laser> lasers, Door finalDoor, BoxCharacter player,
-			Image background, ArrayList<Button> buttons) {
+	public Level(ArrayList<Platform> platforms, ArrayList<Laser> lasers, Door finalDoor, BoxCharacter player, ArrayList<Button> buttons) {
 		this.platforms = platforms;
 		for (Platform p : platforms) {
 			initPlatformPos.add(new Dimension(p.getXPos(), p.getYPos()));
@@ -33,9 +40,9 @@ public class Level {
 		this.player = player;
 		initPlayerPos = new Dimension(player.getxPos(), player.getyPos());
 
-		this.background = background;
-
 		this.buttons = buttons;
+		setId(counterID);
+		counterID++;
 	}
 
 	public void playerPowerActivate(int keyCodePressed) {
@@ -120,23 +127,19 @@ public class Level {
 
 			platformToReset.setXPos(initPos.width);
 			platformToReset.setYPos(initPos.height);
+			platformToReset.reset();
 		}
 
 		for (int i = 0; i < lasers.size(); i++) {
 			Laser laserToReset = lasers.get(i);
-			boolean isOn = laserToReset.isOn();
+			boolean isOn = initLaserOn.get(i);
 
 			laserToReset.setOn(isOn);
 		}
 
 		finalDoor.close();
 
-		player.setxPos(initPlayerPos.width);
-		player.setyPos(initPlayerPos.height);
-	}
-
-	public Image getBackground() {
-		return background;
+		player.reset(initPlayerPos.width, initPlayerPos.height);
 	}
 
 	public ArrayList<Platform> getPlatforms() {
@@ -157,5 +160,19 @@ public class Level {
 
 	public ArrayList<Button> getButtons() {
 		return buttons;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 }

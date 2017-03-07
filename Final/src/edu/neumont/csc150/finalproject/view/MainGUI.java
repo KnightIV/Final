@@ -1,7 +1,6 @@
 package edu.neumont.csc150.finalproject.view;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import edu.neumont.csc150.finalproject.controller.GameManager;
 import edu.neumont.csc150.finalproject.controller.InputControl;
@@ -11,10 +10,10 @@ import edu.neumont.csc150.finalproject.model.Level;
 public class MainGUI {
 	private JFrame frame;
 	private Game curGame;
-	private JPanel curDisplay;
 	private Manual manual;
 	private MainMenu mainMenu;
 	private LevelDisplay levelDisplay;
+	private DeathScreen deathScreen;
 	private InputControl input;
 
 	public MainGUI(GameManager gameManager, Level curLevel) {
@@ -28,11 +27,10 @@ public class MainGUI {
 		frame = new JFrame("Final Project Game");
 		mainMenu = new MainMenu(gameManager);
 		manual = new Manual(gameManager);
-		levelDisplay = new LevelDisplay(curLevel);
+		levelDisplay = new LevelDisplay(curLevel, null);
+		deathScreen = new DeathScreen(gameManager);
 
 		goToMainMenu();
-//		goToLevel();
-		frame.getContentPane().add(curDisplay);
 	}
 
 	public void render() {
@@ -44,35 +42,44 @@ public class MainGUI {
 	}
 	
 	public void initListener() {
+		levelDisplay.removeKeyListener(input);
 		input = new InputControl(curGame);
+		input.reset();
 		levelDisplay.setFocusable(true);
 		levelDisplay.requestFocusInWindow();
 		levelDisplay.addKeyListener(input);		
 	}
 
 	public void swapLevel(Level curLevel) {
-		this.curGame.swapLevel(curLevel);
 		levelDisplay.swapLevel(curLevel);
 	}
 
 	public void goToMainMenu() {
-		curDisplay = mainMenu;
-		frame.getContentPane().remove(mainMenu);
+		frame.getContentPane().removeAll();
 		frame.getContentPane().add(mainMenu);
 		frame.validate();
 		mainMenu.repaint();
 	}
 
 	public void goToManual() {
-		curDisplay = manual;
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(manual);
+		frame.validate();
+		manual.repaint();
 	}
 
 	public void goToLevel() {
-		curDisplay = levelDisplay;
 		frame.getContentPane().removeAll();
 		frame.getContentPane().add(levelDisplay);
 		frame.validate();
 		levelDisplay.repaint();
+	}
+	
+	public void goToDeathScreen() {
+		frame.getContentPane().removeAll();
+		frame.getContentPane().add(deathScreen);
+		frame.validate();
+		deathScreen.repaint();
 	}
 
 	public void setVisible() {

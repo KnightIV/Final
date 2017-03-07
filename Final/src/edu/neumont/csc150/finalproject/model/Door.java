@@ -1,8 +1,13 @@
 package edu.neumont.csc150.finalproject.model;
 
+import java.io.Serializable;
+
 import javax.swing.ImageIcon;
 
-public class Door {
+public class Door implements Serializable {
+	
+	private static final long serialVersionUID = -2797463060716394555L;
+	
 	private int width = 60, height = 220;
 	private int xPos, yPos;
 	private ImageIcon texture;

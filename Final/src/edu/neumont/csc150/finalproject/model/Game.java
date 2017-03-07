@@ -1,8 +1,16 @@
 package edu.neumont.csc150.finalproject.model;
 
-public class Game {
+import java.io.Serializable;
 
+public class Game implements Serializable{
+
+	private static final long serialVersionUID = 6110841132960516050L;
+	
 	private Level curLevel;
+	
+	public Game() {
+		
+	}
 	
 	public Game(Level curLevel) {
 		this.curLevel = curLevel;

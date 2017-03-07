@@ -5,10 +5,14 @@ import java.awt.event.KeyEvent;
 
 public class Crateon extends BoxCharacter {
 
+	private static final long serialVersionUID = 3113030185585293023L;
+	
 	private GravityDirection gravityDir;
 
 	public Crateon(int startX, int startY) {
 		super(startX, startY);
+		this.setWidth(800/10);
+		this.setHeight(800/10);
 		gravityDir = GravityDirection.DOWN;
 	}
 
@@ -22,23 +26,27 @@ public class Crateon extends BoxCharacter {
 	public void playerPowerActivate(int keyCodePressed) {
 		switch (keyCodePressed) {
 		case KeyEvent.VK_W:
+			this.setOwnYVector(this.getOwnYVector() - 1);
+			this.setyPos(this.getyPos() + 5);
 			gravityChange(GravityDirection.UP);
-			this.setyPos(this.getyPos() + 3);
 			break;
 
 		case KeyEvent.VK_S:
+			this.setOwnYVector(this.getOwnYVector() + 1);
+			this.setyPos(this.getyPos() - 5);
 			gravityChange(GravityDirection.DOWN);
-			this.setyPos(this.getyPos() - 3);
 			break;
 
 		case KeyEvent.VK_D:
+			this.setOwnXVector(this.getOwnXVector() + 1);
+			this.setxPos(this.getxPos() + 5);
 			gravityChange(GravityDirection.RIGHT);
-			this.setxPos(this.getxPos() + 3);
 			break;
 
 		case KeyEvent.VK_A:
+			this.setOwnXVector(this.getOwnXVector() - 1);
+			this.setxPos(this.getxPos() - 5);
 			gravityChange(GravityDirection.LEFT);
-			this.setxPos(this.getxPos() - 3);
 			break;
 		}
 	}
@@ -83,8 +91,24 @@ public class Crateon extends BoxCharacter {
 	}
 
 	public void reset(int initXPos, int initYPos) {
-		super.reset(initXPos, initYPos);
 		gravityDir = GravityDirection.DOWN;
+		super.reset(initXPos, initYPos);
+	}
+
+	public void stop(boolean verticalMove) {
+		switch (gravityDir) {
+		case UP:
+
+		case DOWN:
+			super.stop(verticalMove);
+			break;
+
+		case LEFT:
+
+		case RIGHT:
+			super.stop(!verticalMove);
+			break;
+		}
 	}
 
 	@Override
@@ -115,7 +139,7 @@ public class Crateon extends BoxCharacter {
 			break;
 		}
 	}
-	
+
 	public GravityDirection getGravityDirection() {
 		return gravityDir;
 	}

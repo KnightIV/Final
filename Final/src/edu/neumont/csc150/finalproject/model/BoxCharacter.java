@@ -1,19 +1,20 @@
 package edu.neumont.csc150.finalproject.model;
 
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 
 import javax.swing.Timer;
 
 import edu.neumont.csc150.finalproject.controller.GameManager;
 
-abstract public class BoxCharacter implements ActionListener {
+abstract public class BoxCharacter implements ActionListener, Serializable {
 
+	private static final long serialVersionUID = -679713699150160073L;
+	
 	public static final int GRAVITY = 1, JUMP = 16, MOVE = 5, MAX_FALL_SPEED = 17;
 	private int xPos, yPos, ownXVector, ownYVector, otherYVector, otherXVector, width, height;
-	private Image image;
-	protected boolean isVerticalStopped = false, isOnButton = false, hasJumped = false;
+	protected boolean isVerticalStopped = false, hasJumped = false;
 	protected Timer jumpTimer;
 
 	private String name;
@@ -21,8 +22,6 @@ abstract public class BoxCharacter implements ActionListener {
 	public BoxCharacter(int startX, int startY) {
 		this.setxPos(startX);
 		this.setyPos(startY);
-		this.width = 30;
-		this.height = 30;
 		jumpTimer = new Timer(GameManager.FRAME_RATE, this);
 		jumpTimer.start();
 	}
@@ -56,6 +55,8 @@ abstract public class BoxCharacter implements ActionListener {
 	public void reset(int initXPos, int initYPos) {
 		setyPos(initYPos);
 		setxPos(initXPos);
+		setOwnXVector(0);
+		setOwnYVector(0);
 	}
 
 	/**
@@ -179,21 +180,6 @@ abstract public class BoxCharacter implements ActionListener {
 	}
 
 	/**
-	 * @return the image
-	 */
-	public Image getImage() {
-		return image;
-	}
-
-	/**
-	 * @param image
-	 *            the image to set
-	 */
-	public void setImage(Image image) {
-		this.image = image;
-	}
-
-	/**
 	 * @return the name
 	 */
 	public String getName() {
@@ -206,14 +192,6 @@ abstract public class BoxCharacter implements ActionListener {
 	 */
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public boolean isOnButton() {
-		return isOnButton;
-	}
-
-	public void setIsOnButton(boolean isOnButton) {
-		this.isOnButton = isOnButton;
 	}
 	
 	public void setHasJumped(boolean hasJumped) {

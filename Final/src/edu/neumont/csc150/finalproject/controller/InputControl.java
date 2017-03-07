@@ -9,9 +9,10 @@ import edu.neumont.csc150.finalproject.model.Game;
 public class InputControl implements KeyListener {
 
 	private Game curGame;
-	private ArrayList<Integer> keysPressed = new ArrayList<>();
+	private ArrayList<Integer> keysPressed;
 
 	public InputControl(Game curGame) {
+		keysPressed = new ArrayList<>();
 		this.curGame = curGame;
 	}
 
@@ -33,6 +34,12 @@ public class InputControl implements KeyListener {
 				curGame.playerPowerActivate(key);
 				break;
 			}
+		}
+	}
+	
+	public void reset() {
+		while (keysPressed.size() > 0) {
+			keysPressed.remove(0);
 		}
 	}
 

@@ -1,9 +1,13 @@
 package edu.neumont.csc150.finalproject.model;
 
+import java.io.Serializable;
+
 import javax.swing.ImageIcon;
 
-public class Laser {
+public class Laser implements Serializable {
 
+	private static final long serialVersionUID = 7774685546288721788L;
+	
 	private int xPos, yPos, width, height;
 	private ImageIcon texture;
 	private boolean isOn;

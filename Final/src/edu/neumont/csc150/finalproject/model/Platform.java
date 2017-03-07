@@ -1,33 +1,33 @@
 package edu.neumont.csc150.finalproject.model;
 
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 
 import javax.swing.Timer;
 
 import edu.neumont.csc150.finalproject.controller.GameManager;
 
-public class Platform implements ActionListener {
+public class Platform implements ActionListener, Serializable {
+
+	private static final long serialVersionUID = 7397853236720804514L;
 
 	private Dimension sideHitBox, topBottomHitBox;
 	
-	private int xPos, xVector, xDisplacement, yPos, yDisplacement, yVector, width, height;
-	private Image texture;
+	private int xPos, xVector, xDisplacement, yPos, yDisplacement, yVector, width, height, speed;
 	private Timer moveTimer;
 	private double counter = 0;
 	private boolean isVerticalMove;
 	private boolean isHorizontalMove;
 
-	public Platform(int x, int y, int width, int height, Image texture, int xDisplacement, int yDisplacement,
-			boolean isVerticalMove, boolean isHorizontalMove) {
+	public Platform(int x, int y, int width, int height, int xDisplacement, int yDisplacement,
+			boolean isVerticalMove, boolean isHorizontalMove, int speed) {
 		this.xPos = x;
 		this.yPos = y;
 		this.width = width;
 		this.height = height;
-		
-		this.texture = texture;
+		this.speed = speed;
 		
 		this.sideHitBox = new Dimension(width/4, height);
 		this.topBottomHitBox = new Dimension(width, height/2);
@@ -42,18 +42,21 @@ public class Platform implements ActionListener {
 		initTimer();
 	}
 
-	public Platform(int x, int y, int width, int height, Image texture) {
+	public Platform(int x, int y, int width, int height) {
 		this.xPos = x;
 		this.yPos = y;
 		this.width = width;
 		this.height = height;
-		this.texture = texture;
 		
 		this.sideHitBox = new Dimension(width/4, height);
 		this.topBottomHitBox = new Dimension(width, height/2);
 		
 //		this.sideHitBox = new Dimension(texture.getIconWidth()/4, texture.getIconHeight());
 //		this.topBottomHitBox = new Dimension(texture.getIconWidth()/2, texture.getIconHeight()/2);
+	}
+	
+	public void reset() {
+		counter = 0;
 	}
 
 	public void initTimer() {
@@ -93,10 +96,6 @@ public class Platform implements ActionListener {
 		return height;
 	}
 
-	public Image getTexture() {
-		return texture;
-	}
-	
 	/**
 	 * @return the xDisplacement
 	 */
@@ -134,20 +133,20 @@ public class Platform implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (isVerticalMove) {
-			xPos += (int) (xDisplacement / 10 * Math.sin(counter / 2));
-			xVector = (int) (xDisplacement / 10 * Math.cos(counter / 2));
+		if (isHorizontalMove) {
+			xVector = (int) - (xDisplacement * Math.cos(counter / 2));
+			xPos += xVector;
 		}
 
-		if (isHorizontalMove) {
-			yPos += (int) (yDisplacement / 10 * Math.sin(counter / 2));
-			yVector = (int) (yDisplacement / 10 * Math.cos(counter / 2));
+		if (isVerticalMove) {
+			yPos += (int) (yDisplacement * Math.sin(counter / 2));
+			yVector = (int) (yDisplacement * Math.cos(counter / 2));
 		}
 
 		if (counter == Integer.MAX_VALUE) {
 			counter = 0;
 		} else {
-			counter += 0.1;
+			counter += speed/10.0;
 		}
 	}
 }

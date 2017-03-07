@@ -1,15 +1,19 @@
 package edu.neumont.csc150.finalproject.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
-public class Button {
+public class Button implements Serializable {
 
-	private int width = 30, height = 20, xPos, yPos;
+	private static final long serialVersionUID = 7104657014048498506L;
+	
+	private int width = 30, height = 30, xPos, yPos;
 	private ImageIcon texture;
 	private Door doorLink;
 	private ArrayList<Laser> laserLinks;
+	private boolean isPlayerOnButton = false;
 
 	public Button(int x, int y, Door doorLink, ArrayList<Laser> laserLinks) {
 		xPos = x;
@@ -89,5 +93,19 @@ public class Button {
 	 */
 	public void setTexture(ImageIcon texture) {
 		this.texture = texture;
+	}
+
+	/**
+	 * @return the isPlayerOnButton
+	 */
+	public boolean isPlayerOnButton() {
+		return isPlayerOnButton;
+	}
+
+	/**
+	 * @param isPlayerOnButton the isPlayerOnButton to set
+	 */
+	public void setPlayerOnButton(boolean isPlayerOnButton) {
+		this.isPlayerOnButton = isPlayerOnButton;
 	}
 }

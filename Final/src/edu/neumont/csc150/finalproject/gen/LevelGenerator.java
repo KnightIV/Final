@@ -22,13 +22,13 @@ public class LevelGenerator {
 	private int width = 0, height = 0;
 
 	private int platformColor = 0x3F48CC;
-	private int horizontalMovingPlatformColor = 10;
-	private int verticalMovingPlatformColor = 11;
+	private int horizontalMovingPlatformColor = 0xfff200;
+	private int verticalMovingPlatformColor = 0x22cae5;
 	private int doorColor = 0xA349A4;
 	private int buttonColor = 0xB97A57;
 	private int laserColor = 0xED1C24;
 	private int crateonColor = 0x22B14C;
-	private int caseyColor = 9;
+	private int caseyColor = 0xfb71f0;
 
 	private ArrayList<Platform> platformBlocks = new ArrayList<>();
 	private ArrayList<Platform> horizontalMovingPlatformBlocks = new ArrayList<>();
@@ -52,7 +52,7 @@ public class LevelGenerator {
 
 	public void getPixels() {
 		try {
-			BufferedImage level = ImageIO.read(new File("Levels/Level1.png"));
+			BufferedImage level = ImageIO.read(new File("Levels/Level2.png"));
 			width = level.getWidth();
 			height = level.getHeight();
 			pixels = new int[width * height];
@@ -69,13 +69,16 @@ public class LevelGenerator {
 	public void searchPixels() throws IOException {
 		System.out.println("Searching for objects...");
 		int w, h;
-		Image platformImage = ImageIO.read(new File("resources/platformTile.png"));
-
+		
 		String name = "";
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				if (pixels2D[x][y] == platformColor) {
 					name = "platform";
+				} else if (pixels2D[x][y] == horizontalMovingPlatformColor) {
+					name = "horizontal platform";
+				} else if (pixels2D[x][y] == verticalMovingPlatformColor) {
+					name = "vertical platform";
 				} else if (pixels2D[x][y] == doorColor) {
 					name = "door";
 				} else if (pixels2D[x][y] == buttonColor) {
@@ -90,13 +93,14 @@ public class LevelGenerator {
 					continue;
 				w = readW(x, y);
 				h = readH(x, y);
+				
 				if (name.equals("platform")) {
-					platformBlocks.add(new Platform(x, y, w, h, platformImage));
-				} else if(name.equals("horizontalMovingPlatformColor")) {
-					horizontalMovingPlatformBlocks.add(new Platform(x, y, w, h, platformImage, 10, 0, false, true));
-				}else if(name.equals("verticalMovingPlatformColor")) {
-					verticalMovingPlatformBlocks.add(new Platform(x, y, w, h, platformImage, 0, 10, true, false));
-				}else if (name.equals("button")) {
+					platformBlocks.add(new Platform(x, y, w, h));
+				} else if (name.equals("horizontal platform")) {
+					horizontalMovingPlatformBlocks.add(new Platform(x, y, w, h, 10, 0, false, true, 0));
+				} else if (name.equals("vertical platform")) {
+					verticalMovingPlatformBlocks.add(new Platform(x, y, w, h, 0, 10, true, false, 0));
+				} else if (name.equals("button")) {
 					buttonBlocks.add(new Button(x, y, null, null));
 				} else if (name.equals("laser")) {
 					laserBlocks.add(new Laser(x, y, w, h, true));
@@ -107,7 +111,7 @@ public class LevelGenerator {
 				} else if (name.equals("casey")) {
 					caseyBlock = new Casey(x, y);
 				}
-
+				
 				for (int i = x; i < x + w; i++) {
 					for (int j = y; j < y + h; j++) {
 						pixels2D[i][j] = 0;
@@ -122,7 +126,7 @@ public class LevelGenerator {
 	public int readW(int x, int y) {
 		int count = 0;
 		int color = pixels2D[x][y];
-		while (pixels2D[x][y] == color) {
+		while (x < 2560 && pixels2D[x][y] == color) {
 			count++;
 			x++;
 		}
@@ -132,7 +136,7 @@ public class LevelGenerator {
 	public int readH(int x, int y) {
 		int count = 0;
 		int color = pixels2D[x][y];
-		while (pixels2D[x][y] == color) {
+		while (y < 1440 && pixels2D[x][y] == color) {
 			count++;
 			y++;
 		}
@@ -143,17 +147,17 @@ public class LevelGenerator {
 		System.out.println("\nOutput\n");
 		for (Platform p : platformBlocks) {
 			System.out.println("levelPlatforms.add(new Platform(" + p.getXPos() + ", " + p.getYPos() + ", "
-					+ p.getWidth() + ", " + p.getHeight() + ", " + "platformImage" + "));");
+					+ p.getWidth() + ", " + p.getHeight() + "));");
 		}
 		for (Platform h : horizontalMovingPlatformBlocks) {
 			System.out.println("levelPlatforms.add(new Platform(" + h.getXPos() + ", " + h.getYPos() + ", "
-					+ h.getWidth() + ", " + h.getHeight() + ", " + "platformImage" + ", "  + h.getxDisplacement() + ", "  + h.getyDisplacement()
-					+ ", " + h.isVerticalMove() + ", "  + h.isHorizontalMove() + "));");
+					+ h.getWidth() + ", " + h.getHeight() + ", " + h.getxDisplacement() + ", "
+					+ h.getyDisplacement() + ", " + h.isVerticalMove() + ", " + h.isHorizontalMove() + "));");
 		}
 		for (Platform v : verticalMovingPlatformBlocks) {
 			System.out.println("levelPlatforms.add(new Platform(" + v.getXPos() + ", " + v.getYPos() + ", "
-					+ v.getWidth() + ", " + v.getHeight() + ", " + "platformImage" + ", "  + v.getxDisplacement() + ", "  + v.getyDisplacement()
-					+ ", " + v.isVerticalMove() + ", "  + v.isHorizontalMove() + "));");
+					+ v.getWidth() + ", " + v.getHeight() + ", " + v.getxDisplacement() + ", "
+					+ v.getyDisplacement() + ", " + v.isVerticalMove() + ", " + v.isHorizontalMove() + "));");
 		}
 		for (Button b : buttonBlocks) {
 			System.out.println("levelButtons.add(new Button(" + b.getXPos() + ", " + b.getYPos() + ", " + "null, "
