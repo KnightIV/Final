@@ -1,6 +1,5 @@
 package edu.neumont.csc150.finalproject.gen;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -52,7 +51,7 @@ public class LevelGenerator {
 
 	public void getPixels() {
 		try {
-			BufferedImage level = ImageIO.read(new File("Levels/Level2.png"));
+			BufferedImage level = ImageIO.read(new File("Levels/Level3.png"));
 			width = level.getWidth();
 			height = level.getHeight();
 			pixels = new int[width * height];
@@ -146,16 +145,16 @@ public class LevelGenerator {
 	public void outputCode() {
 		System.out.println("\nOutput\n");
 		for (Platform p : platformBlocks) {
-			System.out.println("levelPlatforms.add(new Platform(" + p.getXPos() + ", " + p.getYPos() + ", "
+			System.out.println("levelPlatforms.add(new Platform(" + p.getxPos() + ", " + p.getyPos() + ", "
 					+ p.getWidth() + ", " + p.getHeight() + "));");
 		}
 		for (Platform h : horizontalMovingPlatformBlocks) {
-			System.out.println("levelPlatforms.add(new Platform(" + h.getXPos() + ", " + h.getYPos() + ", "
+			System.out.println("levelPlatforms.add(new Platform(" + h.getxPos() + ", " + h.getyPos() + ", "
 					+ h.getWidth() + ", " + h.getHeight() + ", " + h.getxDisplacement() + ", "
 					+ h.getyDisplacement() + ", " + h.isVerticalMove() + ", " + h.isHorizontalMove() + "));");
 		}
 		for (Platform v : verticalMovingPlatformBlocks) {
-			System.out.println("levelPlatforms.add(new Platform(" + v.getXPos() + ", " + v.getYPos() + ", "
+			System.out.println("levelPlatforms.add(new Platform(" + v.getxPos() + ", " + v.getyPos() + ", "
 					+ v.getWidth() + ", " + v.getHeight() + ", " + v.getxDisplacement() + ", "
 					+ v.getyDisplacement() + ", " + v.isVerticalMove() + ", " + v.isHorizontalMove() + "));");
 		}

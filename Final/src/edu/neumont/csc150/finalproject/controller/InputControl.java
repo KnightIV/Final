@@ -6,11 +6,25 @@ import java.util.ArrayList;
 
 import edu.neumont.csc150.finalproject.model.Game;
 
+/**
+ * Handles all keyboard inputs from the player
+ * 
+ * @author Jacob Adams
+ * @author Julie Babylon
+ * @author Ramon Caballero Villegas
+ *
+ */
 public class InputControl implements KeyListener {
 
 	private Game curGame;
 	private ArrayList<Integer> keysPressed;
 
+	/**
+	 * Initializes the keyboard listener
+	 * 
+	 * @param curGame
+	 *            - the current game playing
+	 */
 	public InputControl(Game curGame) {
 		keysPressed = new ArrayList<>();
 		this.curGame = curGame;
@@ -36,12 +50,6 @@ public class InputControl implements KeyListener {
 			}
 		}
 	}
-	
-	public void reset() {
-		while (keysPressed.size() > 0) {
-			keysPressed.remove(0);
-		}
-	}
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
@@ -61,6 +69,6 @@ public class InputControl implements KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-		
+
 	}
 }

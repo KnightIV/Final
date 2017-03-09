@@ -5,32 +5,56 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
+/**
+ * Model class for a level's buttons
+ * 
+ * @author Jacob Adams
+ * @author Julie Babylon
+ * @author Ramon Caballero Villegas
+ *
+ */
 public class Button implements Serializable {
 
 	private static final long serialVersionUID = 7104657014048498506L;
-	
+
 	private int width = 30, height = 30, xPos, yPos;
 	private ImageIcon texture;
 	private Door doorLink;
 	private ArrayList<Laser> laserLinks;
 	private boolean isPlayerOnButton = false;
 
+	/**
+	 * Initializes the button
+	 * 
+	 * @param x
+	 *            - the button's x position
+	 * @param y
+	 *            - the button's y position
+	 * @param doorLink
+	 *            - the door that this button links to; can be null if it does
+	 *            not need to link to a door
+	 * @param laserLinks
+	 *            - the lasers that this button links to; can be null if it does
+	 *            not need to link to lasers
+	 */
 	public Button(int x, int y, Door doorLink, ArrayList<Laser> laserLinks) {
 		xPos = x;
 		yPos = y;
 		this.doorLink = doorLink;
 		this.laserLinks = laserLinks;
-		// width = texture.getIconWidth();
-		// height = texture.getIconHeight();
 	}
 
+	/**
+	 * Activates or deactivates every laser and door that the button is linked
+	 * to
+	 */
 	public void trigger() {
 		if (laserLinks != null) {
 			for (Laser link : laserLinks) {
 				link.toggleLaser();
 			}
 		}
-		
+
 		if (doorLink != null) {
 			doorLink.toggleDoor();
 		}
@@ -103,7 +127,8 @@ public class Button implements Serializable {
 	}
 
 	/**
-	 * @param isPlayerOnButton the isPlayerOnButton to set
+	 * @param isPlayerOnButton
+	 *            the isPlayerOnButton to set
 	 */
 	public void setPlayerOnButton(boolean isPlayerOnButton) {
 		this.isPlayerOnButton = isPlayerOnButton;

@@ -8,17 +8,37 @@ import javax.swing.Timer;
 
 import edu.neumont.csc150.finalproject.controller.GameManager;
 
+/**
+ * Abstract class from which the player inherits properties
+ * 
+ * @author Jacob Adams
+ * @author Julie Babylon
+ * @author Ramon Caballero Villegas
+ *
+ */
 abstract public class BoxCharacter implements ActionListener, Serializable {
 
 	private static final long serialVersionUID = -679713699150160073L;
-	
-	public static final int GRAVITY = 1, JUMP = 16, MOVE = 5, MAX_FALL_SPEED = 17;
+
+	/**
+	 * Final values indicating constants in the game world
+	 */
+	public static final int GRAVITY = 1, JUMP = 16, MOVE = 8, MAX_FALL_SPEED = 17;
+
 	private int xPos, yPos, ownXVector, ownYVector, otherYVector, otherXVector, width, height;
 	protected boolean isVerticalStopped = false, hasJumped = false;
 	protected Timer jumpTimer;
 
 	private String name;
 
+	/**
+	 * Constructor for a BoxCharacter object
+	 * 
+	 * @param startX
+	 *            - the beginning x-position for the player in the level
+	 * @param startY
+	 *            - the beginning y-position for the player in the level
+	 */
 	public BoxCharacter(int startX, int startY) {
 		this.setxPos(startX);
 		this.setyPos(startY);
@@ -28,14 +48,23 @@ abstract public class BoxCharacter implements ActionListener, Serializable {
 
 	abstract public void playerPowerActivate(int keyCodePressed);
 
+	/**
+	 * Moves the player to the right
+	 */
 	public void moveRight() {
 		this.setOwnXVector(MOVE);
 	}
 
+	/**
+	 * Moves the player to the left
+	 */
 	public void moveLeft() {
 		this.setOwnXVector(-MOVE);
 	}
 
+	/**
+	 * Makes the player jump
+	 */
 	public void jump() {
 		if (!hasJumped) {
 			this.yPos--;
@@ -44,6 +73,13 @@ abstract public class BoxCharacter implements ActionListener, Serializable {
 		}
 	}
 
+	/**
+	 * Stops the player from moving in a specified axis
+	 * 
+	 * @param verticalMove
+	 *            - true if the player should be stopped in the vertical axis;
+	 *            else false
+	 */
 	public void stop(boolean verticalMove) {
 		if (verticalMove) {
 			ownYVector = 0;
@@ -52,6 +88,11 @@ abstract public class BoxCharacter implements ActionListener, Serializable {
 		}
 	}
 
+	/**
+	 * Resets the player to the beginning of the level
+	 * @param initXPos - the player's initial x-position
+	 * @param initYPos - the player's initial y-position
+	 */
 	public void reset(int initXPos, int initYPos) {
 		setyPos(initYPos);
 		setxPos(initXPos);
@@ -193,11 +234,18 @@ abstract public class BoxCharacter implements ActionListener, Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	/**
+	 * Set whether or not the player has jumped
+	 * @param hasJumped - whether or not the player has recently jumped
+	 */
 	public void setHasJumped(boolean hasJumped) {
 		this.hasJumped = hasJumped;
 	}
 
+	/**
+	 * Handles the manipulation of gravity as a constant force
+	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if (!isVerticalStopped && ownYVector != Math.abs(MAX_FALL_SPEED)) {

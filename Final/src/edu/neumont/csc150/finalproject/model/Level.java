@@ -28,7 +28,7 @@ public class Level implements Serializable {
 	public Level(ArrayList<Platform> platforms, ArrayList<Laser> lasers, Door finalDoor, BoxCharacter player, ArrayList<Button> buttons) {
 		this.platforms = platforms;
 		for (Platform p : platforms) {
-			initPlatformPos.add(new Dimension(p.getXPos(), p.getYPos()));
+			initPlatformPos.add(new Dimension(p.getxPos(), p.getyPos()));
 		}
 
 		this.lasers = lasers;
@@ -54,9 +54,9 @@ public class Level implements Serializable {
 
 			// checks the right side of Casey
 			isFarFromPlatform = keyCodePressed == KeyEvent.VK_D
-					&& !checkForPlayerCollision(p.getXPos() + Casey.TELEPORT_DISTANCE,
-							p.getXPos() + p.getWidth() + Casey.TELEPORT_DISTANCE, p.getYPos(),
-							p.getYPos() + p.getHeight());
+					&& !checkForPlayerCollision(p.getxPos() + Casey.TELEPORT_DISTANCE,
+							p.getxPos() + p.getWidth() + Casey.TELEPORT_DISTANCE, p.getyPos(),
+							p.getyPos() + p.getHeight());
 
 			if (isFarFromPlatform) {
 				break;
@@ -64,27 +64,27 @@ public class Level implements Serializable {
 
 			// checks the left side of Casey
 			isFarFromPlatform = keyCodePressed == KeyEvent.VK_A
-					&& !checkForPlayerCollision(p.getXPos() - Casey.TELEPORT_DISTANCE,
-							p.getXPos() + p.getWidth() - Casey.TELEPORT_DISTANCE, p.getYPos(),
-							p.getYPos() + p.getHeight());
+					&& !checkForPlayerCollision(p.getxPos() - Casey.TELEPORT_DISTANCE,
+							p.getxPos() + p.getWidth() - Casey.TELEPORT_DISTANCE, p.getyPos(),
+							p.getyPos() + p.getHeight());
 
 			if (isFarFromPlatform) {
 				break;
 			}
 
 			// checks the bottom side of Casey
-			isFarFromPlatform = keyCodePressed == KeyEvent.VK_S && !checkForPlayerCollision(p.getXPos(),
-					p.getXPos() + p.getWidth(), p.getYPos() + Casey.TELEPORT_DISTANCE,
-					p.getYPos() + p.getHeight() + Casey.TELEPORT_DISTANCE);
+			isFarFromPlatform = keyCodePressed == KeyEvent.VK_S && !checkForPlayerCollision(p.getxPos(),
+					p.getxPos() + p.getWidth(), p.getyPos() + Casey.TELEPORT_DISTANCE,
+					p.getyPos() + p.getHeight() + Casey.TELEPORT_DISTANCE);
 
 			if (isFarFromPlatform) {
 				break;
 			}
 
 			// checks the top side of Casey
-			isFarFromPlatform = keyCodePressed == KeyEvent.VK_W && !checkForPlayerCollision(p.getXPos(),
-					p.getXPos() + p.getWidth(), p.getYPos() - Casey.TELEPORT_DISTANCE,
-					p.getYPos() + p.getHeight() - Casey.TELEPORT_DISTANCE);
+			isFarFromPlatform = keyCodePressed == KeyEvent.VK_W && !checkForPlayerCollision(p.getxPos(),
+					p.getxPos() + p.getWidth(), p.getyPos() - Casey.TELEPORT_DISTANCE,
+					p.getyPos() + p.getHeight() - Casey.TELEPORT_DISTANCE);
 
 		}
 		if (player instanceof Casey && isFarFromPlatform) {
@@ -125,8 +125,8 @@ public class Level implements Serializable {
 			Dimension initPos = initPlatformPos.get(i);
 			Platform platformToReset = platforms.get(i);
 
-			platformToReset.setXPos(initPos.width);
-			platformToReset.setYPos(initPos.height);
+			platformToReset.setxPos(initPos.width);
+			platformToReset.setyPos(initPos.height);
 			platformToReset.reset();
 		}
 
